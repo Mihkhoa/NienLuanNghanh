@@ -1,0 +1,15 @@
+// create
+POST http://localhost:3001/api/importInvoice/add
+Content-Type: application/json
+
+{
+  "GiaSPN": "200000",
+  "MaKhoHang": "1",
+  "MaSP": "SP001",
+  "NgayLapHDN": "2021-10-3",
+  "SoLuongNhap": "25",
+}
+
+###
+GET  http://localhost:3001/api/products/sortbyproduct=DESC
+

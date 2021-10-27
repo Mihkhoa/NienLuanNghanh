@@ -1,0 +1,86 @@
+.field + .field {
+  margin-top: 35px;
+}
+
+.field {
+  display: grid;
+  grid-template-columns: 125px 1fr;
+  align-items: center;
+}
+
+.inputField input,
+.inputField select,
+.inputField textarea {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  padding: 5px 10px;
+}
+
+.inputField .errors{
+  display: block;
+  position: absolute;
+
+  color: rgb(243, 3, 3);
+}
+
+.inputField .tensanpham {
+  width: 100%;
+  grid-column: 2/4;
+}
+
+.inputField .loaisanpham,
+.inputField .kichco {
+  width: 10%;
+}
+
+.inputField .thongtinsanpham {
+  width: 100%;
+}
+
+.inputField .hinhanh {
+  display: none;
+}
+
+.inputField .khunghinhanh {
+  width: 100px;
+  height: 100px;
+
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  position: relative;
+  cursor: pointer;
+}
+
+.khunghinhanh div {
+  font-size: 25px;
+  text-align: center;
+  line-height: 90px;
+  color: #ccc;
+}
+
+.khunghinhanh img {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  position: absolute;
+  top: 0;
+}
+
+.inputField button {
+  min-width: 100px;
+  padding: 5px;
+
+  font-weight: 500;
+  cursor: pointer;
+
+  background-color: #1890ff;
+  color: #fff;
+
+  border: 1px solid #1890ff;
+  border-radius: 2.5px;
+}
+
+.inputField button:hover {
+  background-color: #339cff;
+}

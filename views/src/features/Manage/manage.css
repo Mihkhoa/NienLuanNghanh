@@ -1,0 +1,16 @@
+body {
+  background-color: #eeecec;
+}
+
+.container {
+  width: calc(100% - 260px);
+  margin-top: 125px;
+  margin-right: 0;
+  margin-left: auto;
+}
+
+.menu_manage {
+  position: fixed;
+  top: 125px;
+  z-index: 999;
+}

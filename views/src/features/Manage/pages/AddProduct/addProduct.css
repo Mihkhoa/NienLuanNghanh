@@ -1,0 +1,15 @@
+.product_add {
+  width: 100%;
+  padding: 35px 40px;
+  background-color: #fff;
+}
+
+.crollup{
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  border-radius: 5px;
+  background-color: #1088e9;
+  color: #fff;
+  text-align: center;
+}
