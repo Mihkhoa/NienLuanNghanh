@@ -10,7 +10,8 @@ const LoginPage = React.lazy(() => import("./features/Login"));
 const RegisterPage = React.lazy(() => import("./features/Register"));
 const ManagePage = React.lazy(() => import("./features/Manage"));
 const Header = React.lazy(() => import("./components/Header"));
-const ProductPage = React.lazy(() => import("./features/ProductPage/MainPageProduct"));
+const ProductPage = React.lazy(() => import("./features/ProductPage"));
+const InfoProductPage = React.lazy(() => import("./features/InfoProduct"));
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Switch>
             <Route exact path="/" component={LandingPage} />
             <Route exact path="/products" component={ProductPage} />
+            <Route exact path="/products/HAHA" component={InfoProductPage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
             <AuthRoute path="/manage" component={ManagePage} />
