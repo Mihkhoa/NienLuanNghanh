@@ -81,7 +81,7 @@ function MainProductPage() {
         {!!productData &&
           productData.map(({MaSP, TenSP, HinhAnhSP, GiaSPX}, i) => (
             <div className="item_product" key={i}>
-              <NavLink to={`/product/HAHA`}>
+              <NavLink to={"/product/"+MaSP}>
                 <div>
                   <img
                     className="image_product"
