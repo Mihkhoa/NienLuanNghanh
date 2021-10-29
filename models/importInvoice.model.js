@@ -21,8 +21,8 @@ ImportInvoice.create = (newImportInvoice, result) => {
   });
 };
 
-ImportInvoice.find = (MaHDN, result) => {
-  sql.query(`SELECT * FROM HoaDonNhap WHERE MaHDN = '${MaHDN}'`, (err, res) => {
+ImportInvoice.findProduct = (MaSP, result) => {
+  sql.query(`SELECT SoLuongNhap FROM HoaDonNhap WHERE MaSP = '${MaSP}'`, (err, res) => {
     if (err) {
       console.log("error" + err);
       result(null, err);

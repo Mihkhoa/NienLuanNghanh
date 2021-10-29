@@ -22,6 +22,7 @@ require("./routes/image.routes")(app);
 require("./routes/size.routes")(app);
 require("./routes/tradeMark.routes")(app);
 require("./routes/importInvoice.routes")(app);
+require("./routes/cart.routes")(app);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

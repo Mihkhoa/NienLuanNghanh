@@ -22,11 +22,11 @@ module.exports = {
     });
   },
 
-  findOne: (req, res) => {
-    ImportInvoice.find(req.params.MaHDN, (err, data) => {
+  findOneProduct: (req, res) => {
+    ImportInvoice.findProduct(req.params.MaSP, (err, data) => {
       if (err) {
         res.status(404).send({
-          message: `Not found Customer with id ${req.params.MaHDN}.`,
+          message: `Not found.`,
         });
       } else {
         res.status(200).send(data);

@@ -1,8 +1,9 @@
 const sql = require("./db");
 
 const Cart = function (cart) {
-  this.MaGH = cart.MaGH;
   this.Username = cart.Username;
+  this.MaSP = cart.MaSP;
+  this.SLSP = cart.SLSP;
 };
 
 Cart.create = (newCart, result) => {
@@ -13,30 +14,32 @@ Cart.create = (newCart, result) => {
       return;
     }
     console.log("Success!");
-    result(null, { ...newCart });
+    result(null, {...newCart});
   });
 };
 
-Cart.find = (MaGH, result) => {
-  sql.query(`SELECT * FROM GioHang WHERE MaGH = '${MaGH}'`, (err, res) => {
-    if (err) {
-      console.log("error" + err);
-      result(null, err);
-      return;
-    }
-
-    if (res.length > 0) {
-      result(null, res);
-    }else{
-      result(null);
-    }
-  });
+Cart.find = (MaSP, Username, result) => {
+  sql.query(
+    `SELECT * FROM GioHang WHERE (Username='${Username}' AND MaSP='${MaSP}')`,
+    (err, res) => {
+      if (err) {
+        console.log("error" + err);
+        result(null, err);
+        return;
+      }
+      if (res.length > 0) {
+        result(null, res);
+      } else {
+        result(null);
+      }
+    },
+  );
 };
 
 Cart.getAll = (result) => {
   sql.query("SELECT * FROM GioHang", (err, res) => {
     if (err) {
-      console.log(result)
+      console.log(result);
       console.log("error: ", err);
       result(null, err);
       return;
@@ -46,9 +49,26 @@ Cart.getAll = (result) => {
   });
 };
 
-Cart.delete = (MaGH, result) => {
+Cart.Sum = (Username, result) => {
+  console.log(Username);
   sql.query(
-    "DELETE FROM GioHang WHERE MaGH=?", MaGH,
+    `SELECT SUM(SLSP) as SLSanPham FROM GioHang WHERE Username='${Username}'`,
+    (err, res) => {
+      if (err) {
+        console.log(result);
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+      console.log("Success!: ");
+      result(null, res);
+    },
+  );
+};
+
+Cart.delete = (Username, MaSP, result) => {
+  sql.query(
+    `DELETE FROM GioHang WHERE Username=${Username} AND MaSP=${MaSP}`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -57,7 +77,23 @@ Cart.delete = (MaGH, result) => {
       }
       console.log("Success!");
       result(null);
-    }
+    },
+  );
+};
+
+Cart.updateSoLuongSP = (cartData, result) => {
+  sql.query(
+    "UPDATE GioHang SET SLSP=?  WHERE Username=? AND MaSP=?",
+    [cartData.SLSP, cartData.Username, cartData.MaSP],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+      console.log("Success!");
+      result(null);
+    },
   );
 };
 

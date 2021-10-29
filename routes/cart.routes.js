@@ -9,10 +9,14 @@ module.exports = (app) => {
 
   app.post("/api/cart/add", cart.create);
 
-  app.get("/api/carts", cart.findAll);
+  app.get("/api/carts/Username=:Username", cart.findAll);
 
-  app.get("/api/cart/MaGH=:MaGH", cart.findOne);
+  app.get("/api/carts/sumproduct/Username=:Username", cart.sumProduct);
 
-  app.delete("/api/cart/MaGH=:MaGH", cart.delete);
+  app.put("/api/cart/update", cart.update);
+
+  app.get("/api/cart/fine/Username=:Username/MaSP=:MaSP", cart.findOne);
+
+  app.delete("/api/cart/delete/Username=:Username/MaSP=:MaSP", cart.delete);
  
 };

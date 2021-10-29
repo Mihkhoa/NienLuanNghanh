@@ -1,14 +1,17 @@
 import "./header.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-import {UserOutlined} from "@ant-design/icons";
+import {UserOutlined, ShoppingCartOutlined} from "@ant-design/icons";
 import {Badge, Menu, Dropdown} from "antd";
 
 import {NavLink, useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../../store/userSlide";
+import cartAPI from "../../api/cartAPI";
 
 function Header() {
+
+  const [number, setNumber] = useState("");
 
   const isLogin = useSelector((state) => state.user.current.username);
   const dispatch = useDispatch();
@@ -20,6 +23,23 @@ function Header() {
     dispatch(logout());
     history.push("/");
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if(!isLogin) return;
+        const numberProduct = await cartAPI.sumProduct(isLogin);
+        if(numberProduct){
+          setNumber(numberProduct[0].SLSanPham);
+        }else{
+          setNumber(0);
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    };
+    fetchData();
+  }, [])
   const menuUser = (
     <Menu>
       <Menu.Item key="0">
@@ -41,6 +61,10 @@ function Header() {
       </Menu.Item>
     </Menu>
   );
+
+  if(number){
+    console.log(number)
+  }
 
   return (
     <div className="header">
@@ -100,8 +124,8 @@ function Header() {
               <div className="header_user">
                 <div>
                   <NavLink to="/cart">
-                    <Badge status="error" count={0}>
-                      <ion-icon name="cart-outline"></ion-icon>
+                    <Badge status="error" count={number} overflowCount={10}>
+                      <ShoppingCartOutlined style={{fontSize: "28px", color: "#fff"}} />
                     </Badge>
                   </NavLink>
                 </div>

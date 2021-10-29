@@ -11,5 +11,16 @@ Content-Type: application/json
 }
 
 ###
-GET  http://localhost:3001/api/products/sortbyproduct=DESC
+GET http://localhost:3001/api/carts/sumproduct/Username=B1809248
+
+
+###
+PUT http://localhost:3001/api/cart/update
+Content-Type: application/json
+
+{
+  "Username": "B1809248",
+  "MaSP": "SP003",
+  "SLSP": 100
+}
 

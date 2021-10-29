@@ -95,11 +95,6 @@ function MainProductPage() {
                 <div className="price_product">
                   {formatNumber.format(GiaSPX)}
                 </div>
-                <div className="btn_buyproduct">
-                  <button className="btn_buynow">
-                    <span>MUA NGAY</span>
-                  </button>
-                </div>
               </NavLink>
             </div>
           ))}

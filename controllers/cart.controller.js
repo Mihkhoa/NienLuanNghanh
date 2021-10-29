@@ -9,8 +9,9 @@ module.exports = {
     }
 
     const cart = new Cart({
-      MaGH: req.body.MaGH,
       Username: req.body.Username,
+      MaSP: req.body.MaSP,
+      SLSP: req.body.SLSP,
     });
 
     Cart.create(cart, (err, data) => {
@@ -20,10 +21,10 @@ module.exports = {
   },
 
   findOne: (req, res) => {
-    Cart.find(req.params.MaGH, (err, data) => {
+    Cart.find(req.params.MaSP, req.params.Username, (err, data) => {
       if (err) {
         res.status(404).send({
-          message: `Not found Customer with id ${req.params.MaGH}.`,
+          message: `Not found.`,
         });
       } else {
         res.status(200).send(data);
@@ -42,8 +43,18 @@ module.exports = {
     });
   },
 
+  sumProduct: (req, res) => {
+    Cart.Sum(req.params.Username, (err, data) => {
+      if (err)
+        res.status(404).send({
+          message: `Not found.`,
+        });
+      else res.status(200).send(data);
+    });
+  },
+
   delete: (req, res) => {
-    Cart.delete(req.params.MaGH, (err, data) => {
+    Cart.delete(req.params.MaSP, req.params.Username, (err, data) => {
       if (err)
         res.status(500).send({
           message:
@@ -53,6 +64,28 @@ module.exports = {
         res.status(200).send({
           message: "Success!",
         });
+    });
+  },
+
+  update: (req, res) => {
+    if (!req.body) {
+      console.log("KHONG CO DATA");
+      res.status(400).send({
+        message: "Content can not be empty!",
+      });
+    }
+    Cart.updateSoLuongSP(new Cart(req.body), (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found.`,
+          });
+        } else {
+          res.status(500).send({
+            message: "Error updating",
+          });
+        }
+      } else res.send(data);
     });
   },
 };

@@ -49,6 +49,8 @@ function FormLogin() {
 
   const dispatch = useDispatch();
 
+  const urlproduct = localStorage.getItem("urlproduct");
+
   const onSubmit = async (data) => {
     try {
       unwrapResult(dispatch(await login(data)));
@@ -61,7 +63,12 @@ function FormLogin() {
     return <Redirect to="/manage" />;
   }
   if(Role === "USER") {
-    return <Redirect to="/products" />
+    if(urlproduct){
+      localStorage.removeItem("urlproduct");
+      return <Redirect to={urlproduct} />
+    }else{
+      return <Redirect to="/products" />
+    }
   }
 
   return (

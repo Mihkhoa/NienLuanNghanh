@@ -11,7 +11,7 @@ module.exports = (app) => {
 
   app.get("/api/importInvoices", importInvoice.findAll);
 
-  app.get("/api/importInvoice/MaSP=:MaSP", importInvoice.findOne);
+  app.get("/api/importInvoice/MaSP=:MaSP", importInvoice.findOneProduct);
 
   app.delete("/api/importInvoice/MaSP=:MaSP", importInvoice.delete);
  
