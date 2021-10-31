@@ -13,10 +13,14 @@ module.exports = (app) => {
 
   app.get("/api/carts/sumproduct/Username=:Username", cart.sumProduct);
 
+  app.get("/api/cart/sumorder/Username=:Username", cart.sumOrder);
+
+  app.get("/api/cart/innerjoin/product/Username=:Username", cart.innerJoinProduct);
+
   app.put("/api/cart/update", cart.update);
 
   app.get("/api/cart/fine/Username=:Username/MaSP=:MaSP", cart.findOne);
 
-  app.delete("/api/cart/delete/Username=:Username/MaSP=:MaSP", cart.delete);
+  app.delete("/api/cart/delete/MaGH=:MaGH", cart.delete);
  
 };

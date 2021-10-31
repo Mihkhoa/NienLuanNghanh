@@ -12,6 +12,8 @@ const ManagePage = React.lazy(() => import("./features/Manage"));
 const Header = React.lazy(() => import("./components/Header"));
 const ProductPage = React.lazy(() => import("./features/ProductPage"));
 const InfoProductPage = React.lazy(() => import("./features/InfoProduct"));
+const CartPage = React.lazy(() => import("./features/cart"));
+const PaymentPage = React.lazy(() => import("./features/PaymentPage"));
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
             <Route exact path="/product/:MaSP" component={InfoProductPage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
+            <Route path="/cart" component={CartPage} />
+            <Route path="/payment" component={PaymentPage} />
             <AuthRoute path="/manage" component={ManagePage} />
             <Route component={NotFound} />
           </Switch>

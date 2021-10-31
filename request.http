@@ -11,7 +11,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3001/api/carts/sumproduct/Username=B1809248
+GET http://localhost:3001/api/cart/innerjoin/product/Username=B1809248
 
 
 ###

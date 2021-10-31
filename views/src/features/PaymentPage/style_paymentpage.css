@@ -1,0 +1,65 @@
+.container_paymentpage {
+  width: 50%;
+  margin-top: 150px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+  background-color: rgb(240, 240, 240);
+  border-radius: 10px;
+}
+
+.payment_product{
+  padding: 10px;
+  background-color: #fff;
+}
+
+.payment_product h2 {
+  text-align: center;
+}
+
+.payment_product .image_product {
+  width: 100%;
+}
+
+.payment_product .ant-row{
+  align-items: center;
+  justify-content: center;
+}
+
+.payment_product .title_product,
+.payment_product .price_product {
+  font-size: 16px;
+}
+
+.container_paymentpage .info_payment{
+  margin-top: 20px;
+  line-height: 40px;
+}
+
+.info_payment hr{
+  border: 0.5px solid #000;
+}
+
+.btn_payment{
+  margin-top: 30px;
+}
+
+.btn_payment .btn_payOffline button{
+  background-color: rgb(16, 16, 255);
+  color: #fff;
+}
+
+.btn_payment .btn_payOnline button{
+  background-color: rgb(255, 199, 16);
+  color: #000;
+}
+
+.btn_payment button{
+  display: block;
+  width: 80%;
+  font-weight: bold;
+  margin: auto;
+  padding: 8px;
+  cursor: pointer;
+  border: none;
+}

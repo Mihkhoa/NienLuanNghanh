@@ -33,7 +33,7 @@ module.exports = {
   },
 
   findAll: (req, res) => {
-    Cart.getAll((err, data) => {
+    Cart.getAll(req.params.Username, (err, data) => {
       if (err)
         res.status(500).send({
           message:
@@ -43,8 +43,29 @@ module.exports = {
     });
   },
 
+  innerJoinProduct: (req, res) => {
+    Cart.joinProduct(req.params.Username, (err, data) => {
+      if (err)
+        res.status(500).send({
+          message:
+            err.message || "Some error",
+        });
+      else res.status(200).send(data);
+    });
+  },
+
   sumProduct: (req, res) => {
-    Cart.Sum(req.params.Username, (err, data) => {
+    Cart.SumProduct(req.params.Username, (err, data) => {
+      if (err)
+        res.status(404).send({
+          message: `Not found.`,
+        });
+      else res.status(200).send(data);
+    });
+  },
+
+  sumOrder: (req, res) => {
+    Cart.SumOrder(req.params.Username, (err, data) => {
       if (err)
         res.status(404).send({
           message: `Not found.`,
@@ -54,11 +75,11 @@ module.exports = {
   },
 
   delete: (req, res) => {
-    Cart.delete(req.params.MaSP, req.params.Username, (err, data) => {
+    Cart.delete(req.params.MaGH, (err, data) => {
       if (err)
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving product.",
+            err.message || "Some error.",
         });
       else
         res.status(200).send({

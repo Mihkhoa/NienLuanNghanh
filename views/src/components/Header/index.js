@@ -39,7 +39,7 @@ function Header() {
       }
     };
     fetchData();
-  }, [])
+  }, [isLogin])
   const menuUser = (
     <Menu>
       <Menu.Item key="0">

@@ -36,20 +36,33 @@ Cart.find = (MaSP, Username, result) => {
   );
 };
 
-Cart.getAll = (result) => {
-  sql.query("SELECT * FROM GioHang", (err, res) => {
+Cart.getAll = (Username, result) => {
+  sql.query(`SELECT * FROM GioHang WHERE Username='${Username}'`, (err, res) => {
     if (err) {
       console.log(result);
       console.log("error: ", err);
       result(null, err);
       return;
     }
-    console.log("user: ", res);
+    console.log("Success!");
     result(null, res);
   });
 };
 
-Cart.Sum = (Username, result) => {
+Cart.joinProduct = (Username, result) => {
+  sql.query(`SELECT * FROM ((giohang INNER JOIN sanpham ON giohang.MaSP = sanpham.MaSP) INNER JOIN hinhanhsanpham ON sanpham.MaSP=hinhanhsanpham.MaSP) WHERE giohang.Username='${Username}'`, (err, res) => {
+    if (err) {
+      console.log(result);
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    console.log("Success!");
+    result(null, res);
+  });
+};
+
+Cart.SumProduct = (Username, result) => {
   console.log(Username);
   sql.query(
     `SELECT SUM(SLSP) as SLSanPham FROM GioHang WHERE Username='${Username}'`,
@@ -60,15 +73,32 @@ Cart.Sum = (Username, result) => {
         result(null, err);
         return;
       }
-      console.log("Success!: ");
+      console.log("Success!");
       result(null, res);
     },
   );
 };
 
-Cart.delete = (Username, MaSP, result) => {
+Cart.SumOrder = (Username, result) => {
+  console.log(Username);
   sql.query(
-    `DELETE FROM GioHang WHERE Username=${Username} AND MaSP=${MaSP}`,
+    `SELECT SUM(SLSP*GiaSPX) as sumOrder FROM GioHang INNER JOIN SanPham ON GioHang.MaSP = SanPham.MaSP WHERE Username='${Username}'`,
+    (err, res) => {
+      if (err) {
+        console.log(result);
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+      console.log("Success!");
+      result(null, res);
+    },
+  );
+};
+
+Cart.delete = (MaGH, result) => {
+  sql.query(
+    `DELETE FROM GioHang WHERE MaGH=${MaGH}`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);

@@ -38,7 +38,7 @@ function InfoProduct() {
       }
     };
     fetchData();
-  }, []);
+  }, [MaSP]);
 
   var formatNumber = new Intl.NumberFormat("vi-VN", {
     style: "currency",
@@ -62,8 +62,7 @@ function InfoProduct() {
       history.push("/register");
     }
     const datacart = await cartAPI.fineOne(Username, MaSP);
-    
-    if (datacart ) {
+    if (datacart) {
       if(datacart[0].SLSP < SoLuongNhap){
         cartAPI.updateOne(dataCart(Username, MaSP, datacart[0].SLSP + 1));
         window.location.reload();
