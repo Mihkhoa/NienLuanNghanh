@@ -14,6 +14,7 @@ const ProductPage = React.lazy(() => import("./features/ProductPage"));
 const InfoProductPage = React.lazy(() => import("./features/InfoProduct"));
 const CartPage = React.lazy(() => import("./features/cart"));
 const PaymentPage = React.lazy(() => import("./features/PaymentPage"));
+const vnPay = React.lazy(() => import("./features/vnpay"));
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/register" component={RegisterPage} />
             <Route path="/cart" component={CartPage} />
             <Route path="/payment" component={PaymentPage} />
+            <Route path="/sales" component={vnPay} />
             <AuthRoute path="/manage" component={ManagePage} />
             <Route component={NotFound} />
           </Switch>
