@@ -9,10 +9,12 @@ module.exports = (app) => {
 
   app.post("/api/exportInvoice/add", exportInvoice.create);
 
-  app.get("/api/exportInvoices", exportInvoice.findAll);
+  // app.get("/api/exportInvoices", exportInvoice.findAll);
 
-  app.get("/api/exportInvoice/MaSP=:MaSP", exportInvoice.findOne);
+  app.get("/api/innerjoin/exportInvoices/customer=:customer", exportInvoice.innerJoinCustomer);
 
-  app.delete("/api/exportInvoice/MaSP=:MaSP", exportInvoice.delete);
+  // app.get("/api/exportInvoice/MaSP=:MaSP", exportInvoice.findOne);
+
+  // app.delete("/api/exportInvoice/MaSP=:MaSP", exportInvoice.delete);
  
 };

@@ -98,7 +98,22 @@ Cart.SumOrder = (Username, result) => {
 
 Cart.delete = (MaGH, result) => {
   sql.query(
-    `DELETE FROM GioHang WHERE MaGH=${MaGH}`,
+    `DELETE FROM GioHang WHERE MaGH='${MaGH}'`,
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+      console.log("Success!");
+      result(null);
+    },
+  );
+};
+
+Cart.deleteall = (Username, result) => {
+  sql.query(
+    `DELETE FROM GioHang WHERE Username='${Username}'`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);

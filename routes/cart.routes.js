@@ -22,5 +22,7 @@ module.exports = (app) => {
   app.get("/api/cart/fine/Username=:Username/MaSP=:MaSP", cart.findOne);
 
   app.delete("/api/cart/delete/MaGH=:MaGH", cart.delete);
+
+  app.delete("/api/cart/delete/Username=:Username", cart.deleteAll);
  
 };

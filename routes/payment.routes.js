@@ -1,48 +1,31 @@
 module.exports = (app) => {
-
   app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Headers", "Access-Control-Allow-Origin: *, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");
     next();
   });
 
-  app.get("/create_payment_url", function (req, res, next) {
-    var dateFormat = require("dateformat");
-    var date = new Date();
-
-    var desc =
-      "Thanh toan don hang thoi gian: " +
-      dateFormat(date, "yyyy-mm-dd HH:mm:ss");
-    res.render("order", {
-      title: "Tạo mới đơn hàng",
-      amount: 10000,
-      description: desc,
-    });
-  });
-
-  app.post("/create_payment_url", (req, res, next) => {
-
-    var ipAddr =
-      req.headers["x-forwarded-for"] ||
-      req.connection.remoteAddress ||
-      req.socket.remoteAddress ||
-      req.connection.socket.remoteAddress;
+  app.post("/create_payment_url", function (req, res, next) {
+    var ipAddr = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
 
     var config = require("config");
-    
-    // var dateFormat = require("dateformat");
 
     var tmnCode = config.get("vnp_TmnCode");
     var secretKey = config.get("vnp_HashSecret");
     var vnpUrl = config.get("vnp_Url");
     var returnUrl = config.get("vnp_ReturnUrl");
 
-    // var date = new Date();
+    const today = new Date();
 
-    // var createDate = dateFormat(date, "yyyymmddHHmmss");
-    // var orderId = dateFormat(date, "HHmmss");
-    var createDate = "202105202359";
-    var orderId = "182352";
+    const yyyy = today.getFullYear();
+    const dd = today.getDate() < 9 ? "0" + today.getDate() : today.getDate();
+    const mm = today.getMonth() + 1 < 9 ? "0" + (today.getMonth() + 1) : today.getMonth() + 1;
 
+    const HH = today.getHours() < 9 ? "0" + today.getHours() : today.getHours();
+    const ss = today.getSeconds() < 9 ? "0" + today.getSeconds() : today.getSeconds();
+    const MM = today.getMinutes() < 9 ? "0" + today.getMinutes() : today.getMinutes();
+
+    var createDate = yyyy + "" + mm + "" + dd + "" + HH + "" + MM + "" + ss;
+    var orderId = HH + "" + MM + "" + ss;
     var amount = req.body.amount;
     var bankCode = req.body.bankCode;
 
@@ -76,18 +59,17 @@ module.exports = (app) => {
     var signData = querystring.stringify(vnp_Params, {encode: false});
     var crypto = require("crypto");
     var hmac = crypto.createHmac("sha512", secretKey);
-    var signed = hmac.update(new Buffer.alloc(11, signData, "utf-8")).digest("hex");
+    var signed = hmac.update(new Buffer.from(signData, "utf-8")).digest("hex");
     vnp_Params["vnp_SecureHash"] = signed;
     vnpUrl += "?" + querystring.stringify(vnp_Params, {encode: false});
 
-    res.redirect(vnpUrl);
+    res.status(200).send(vnpUrl);
   });
 
   app.get("/vnpay_return", function (req, res, next) {
-
     var vnp_Params = req.query;
 
-    var secureHash = vnp_Params["vnp_SecureHash"];
+    var secureHash  = vnp_Params["vnp_SecureHash"];
 
     delete vnp_Params["vnp_SecureHash"];
     delete vnp_Params["vnp_SecureHashType"];
@@ -102,42 +84,46 @@ module.exports = (app) => {
     var signData = querystring.stringify(vnp_Params, {encode: false});
     var crypto = require("crypto");
     var hmac = crypto.createHmac("sha512", secretKey);
-    var signed = hmac.update(new Buffer.alloc(20, signData, "utf-8")).digest("hex");
+    var signed = hmac.update(new Buffer.from(signData, "utf-8")).digest("hex");
 
     if (secureHash === signed) {
       //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
-
-      res.render("success", {code: vnp_Params["vnp_ResponseCode"]});
+      
+      res.status(200).send({code: vnp_Params["vnp_ResponseCode"]});
     } else {
-      res.render("success", {code: "97"});
+      res.status(200).send({code: "97"});
+
     }
   });
 
-  // app.get("/vnpay_ipn", function (req, res, next) {
-  //   var vnp_Params = req.query;
-  //   var secureHash = vnp_Params["vnp_SecureHash"];
+  app.get('/vnpay_ipn', function (req, res, next) {
+    const sql = require("../models/db");
+    var vnp_Params = req.query;
+    var secureHash = vnp_Params['vnp_SecureHash'];
 
-  //   delete vnp_Params["vnp_SecureHash"];
-  //   delete vnp_Params["vnp_SecureHashType"];
+    delete vnp_Params['vnp_SecureHash'];
+    delete vnp_Params['vnp_SecureHashType'];
 
-  //   vnp_Params = sortObject(vnp_Params);
-  //   var config = require("config");
-  //   var secretKey = config.get("vnp_HashSecret");
-  //   var querystring = require("qs");
-  //   var signData = querystring.stringify(vnp_Params, {encode: false});
-  //   var crypto = require("crypto");
-  //   var hmac = crypto.createHmac("sha512", secretKey);
-  //   var signed = hmac.update(new Buffer(signData, "utf-8")).digest("hex");
+    vnp_Params = sortObject(vnp_Params);
+    var config = require('config');
+    var secretKey = config.get('vnp_HashSecret');
+    var querystring = require('qs');
+    var signData = querystring.stringify(vnp_Params, { encode: false });
+    var crypto = require("crypto");     
+    var hmac = crypto.createHmac("sha512", secretKey);
+    var signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");     
+     
 
-  //   if (secureHash === signed) {
-  //     var orderId = vnp_Params["vnp_TxnRef"];
-  //     var rspCode = vnp_Params["vnp_ResponseCode"];
-  //     //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
-  //     res.status(200).json({RspCode: "00", Message: "success"});
-  //   } else {
-  //     res.status(200).json({RspCode: "97", Message: "Fail checksum"});
-  //   }
-  // });
+    if(secureHash === signed){
+        var orderId = vnp_Params['vnp_TxnRef'];
+        var rspCode = vnp_Params['vnp_ResponseCode'];
+        //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
+        res.status(200).json({RspCode: '00', Message: 'success'})
+    }
+    else {
+        res.status(200).json({RspCode: '97', Message: 'Fail checksum'})
+    }
+});
 
   const sortObject = (obj) => {
     var sorted = {};
@@ -153,5 +139,5 @@ module.exports = (app) => {
       sorted[str[key]] = encodeURIComponent(obj[str[key]]).replace(/%20/g, "+");
     }
     return sorted;
-  }
+  };
 };

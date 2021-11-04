@@ -45,12 +45,12 @@
 }
 
 .btn_payment .btn_payOffline button{
-  background-color: rgb(16, 16, 255);
+  background-color: #1890ff;
   color: #fff;
 }
 
 .btn_payment .btn_payOnline button{
-  background-color: rgb(255, 199, 16);
+  background-color: rgb(243, 190, 18);
   color: #000;
 }
 

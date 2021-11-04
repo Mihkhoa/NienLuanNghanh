@@ -13,6 +13,7 @@ const Header = React.lazy(() => import("./components/Header"));
 const ProductPage = React.lazy(() => import("./features/ProductPage"));
 const InfoProductPage = React.lazy(() => import("./features/InfoProduct"));
 const CartPage = React.lazy(() => import("./features/cart"));
+const OrderPage = React.lazy(() => import("./features/OrderPage"));
 const PaymentPage = React.lazy(() => import("./features/PaymentPage"));
 const vnPay = React.lazy(() => import("./features/vnpay"));
 
@@ -31,6 +32,7 @@ function App() {
             <Route path="/cart" component={CartPage} />
             <Route path="/payment" component={PaymentPage} />
             <Route path="/sales" component={vnPay} />
+            <Route path="/order" component={OrderPage} />
             <AuthRoute path="/manage" component={ManagePage} />
             <Route component={NotFound} />
           </Switch>

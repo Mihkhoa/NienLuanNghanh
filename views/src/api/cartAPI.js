@@ -11,6 +11,11 @@ const cartAPI = {
     return axiosClient.delete(url);
   },
 
+  DeleteAll(Username) {
+    const url = `/api/cart/delete/Username=${Username}`;
+    return axiosClient.delete(url);
+  },
+
   findAll(Username) {
     const url = `/api/carts/Username=${Username}`;
     return axiosClient.get(url);

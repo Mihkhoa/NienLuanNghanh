@@ -1,26 +1,12 @@
 // create
-POST http://localhost:3001/api/importInvoice/add
+POST http://localhost:3001/api/exportInvoice/add
 Content-Type: application/json
 
 {
-  "GiaSPN": "200000",
-  "MaKhoHang": "1",
-  "MaSP": "SP001",
-  "NgayLapHDN": "2021-10-3",
-  "SoLuongNhap": "25",
-}
-
-###
-GET http://localhost:3001/api/cart/innerjoin/product/Username=B1809248
-
-
-###
-PUT http://localhost:3001/api/cart/update
-Content-Type: application/json
-
-{
-  "Username": "B1809248",
+  "SoLuongXuat": "7",
+  "NgayLapHDX": "2000-2-30",
+  "TrangThaiHD": "1",
   "MaSP": "SP003",
-  "SLSP": 100
+  "MaKH": "1",
+  "MaKhoHang": "1",
 }
-

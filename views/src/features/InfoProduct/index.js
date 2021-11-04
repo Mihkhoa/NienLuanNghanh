@@ -62,6 +62,7 @@ function InfoProduct() {
       history.push("/register");
     }
     const datacart = await cartAPI.fineOne(Username, MaSP);
+    console.log(datacart)
     if (datacart) {
       if(datacart[0].SLSP < SoLuongNhap){
         cartAPI.updateOne(dataCart(Username, MaSP, datacart[0].SLSP + 1));
@@ -74,7 +75,6 @@ function InfoProduct() {
       window.location.reload();
     }
   };
-  console.log(size);
 
   return (
     <div className="conatiner_infoproduct">

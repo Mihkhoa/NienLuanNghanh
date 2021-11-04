@@ -88,6 +88,20 @@ module.exports = {
     });
   },
 
+  deleteAll: (req, res) => {
+    Cart.deleteall(req.params.Username, (err, data) => {
+      if (err)
+        res.status(500).send({
+          message:
+            err.message || "Some error.",
+        });
+      else
+        res.status(200).send({
+          message: "Success!",
+        });
+    });
+  },
+
   update: (req, res) => {
     if (!req.body) {
       console.log("KHONG CO DATA");
