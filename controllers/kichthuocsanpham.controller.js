@@ -1,4 +1,4 @@
-const WareHouse = require("../models/wareHouse.model");
+const Size = require("../models/kichthuocsanpham.model");
 
 module.exports = {
   create: (req, res) => {
@@ -8,25 +8,22 @@ module.exports = {
       });
     }
 
-    const wareHouse = new WareHouse({
-      MaKhoHang: req.body.MaKhoHang,
-      TenKhoHang: req.body.TenKhoHang,
-      DiaChiKhoHang: req.body.DiaChiKhoHang,
-      SDTKhoHang: req.body.SDTKhoHang,
-      MaLSP: req.body.MaLSP,
+    const size = new Size({
+      ID: req.body.ID,
+      KichThuocSP: req.body.KichThuocSP,
     });
 
-    WareHouse.create( wareHouse, (err, data) => {
+    Size.create(size, (err, data) => {
       if (err) res.status(500).send({message: err.message || "some err"});
       else res.status(200).send(data);
     });
   },
 
   findOne: (req, res) => {
-    WareHouse.find(req.params.MaKhoHang, (err, data) => {
+    Size.find(req.params.ID, (err, data) => {
       if (err) {
         res.status(404).send({
-          message: `Not found Customer with id ${req.params.MaKhoHang}.`,
+          message: `Not found id ${req.params.ID}.`,
         });
       } else {
         res.status(200).send(data);
@@ -35,22 +32,22 @@ module.exports = {
   },
 
   findAll: (req, res) => {
-    WareHouse.getAll((err, data) => {
+    Size.getAll((err, data) => {
       if (err)
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving customers.",
+            err.message || "Some error occurred while retrieving size.",
         });
       else res.status(200).send(data);
     });
   },
 
   delete: (req, res) => {
-    WareHouse.delete(req.params.MaKhoHang, (err, data) => {
+    Size.delete(req.params.ID, (err, data) => {
       if (err)
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving product.",
+            err.message || "Some error occurred while retrieving size.",
         });
       else res.status(200).send({
         message: "Success!"

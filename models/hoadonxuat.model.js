@@ -1,13 +1,10 @@
 const sql = require("./db");
 
 const ExportInvoice = function (data) {
-  this.SoLuongXuat = data.SoLuongXuat;
   this.NgayLapHDX = data.NgayLapHDX;
   this.TrangThaiHD = data.TrangThaiHD;
-  this.MaSP = data.MaSP;
   this.MaKH = data.MaKH;
   this.MaKhoHang = data.MaKhoHang;
-  this.vnp_TransactionNo = data.vnp_TransactionNo;
 };
 
 ExportInvoice.create = (newExportInvoice, result) => {
@@ -38,17 +35,29 @@ ExportInvoice.create = (newExportInvoice, result) => {
 //   });
 // };
 
-// ExportInvoice.getAll = (result) => {
-//   sql.query("SELECT * FROM HoaDonXuat", (err, res) => {
-//     if (err) {
-//       console.log("error: ", err);
-//       result(null, err);
-//       return;
-//     }
-//     console.log("Producer: ", res);
-//     result(null, res);
-//   });
-// };
+ExportInvoice.getAll = (MaKH, result) => {
+  sql.query(`SELECT * FROM HoaDonXuat WHERE MaKH='${MaKH}'`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    console.log("Producer: ", res);
+    result(null, res);
+  });
+};
+
+ExportInvoice.findMa = (result) => {
+  sql.query("SELECT MAX(MaHDX) as MaHDX FROM hoadonxuat", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    console.log("Producer: ", res);
+    result(null, res);
+  });
+};
 
 ExportInvoice.joinCustomer = (result) => {
   sql.query("SELECT * FROM HoaDonXuat", (err, res) => {

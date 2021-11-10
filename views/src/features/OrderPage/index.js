@@ -1,14 +1,18 @@
 import "./style_orderpage.css";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {useHistory} from "react-router-dom";
 import {Row, Col} from "antd";
+import {useHistory} from "react-router-dom";
 
 import vnPayAPI from "../../api/vnpayAPI";
 import cartAPI from "../../api/cartAPI";
 import exportInvoiceAPI from "../../api/exportInvoiceAPI";
+import ChiTietHoaDonXuatAPI from "../../api/chitiethoadonxuatAPI";
+import KhachHangAPI from "../../api/khachhangAPI";
 
 function OrderPage() {
+  const [dataKhachHang, setDataKhachHang] = useState([]);
+
   const params = window.location.search;
   const searchParams = new URLSearchParams(params);
   const urlPay = searchParams
@@ -36,37 +40,68 @@ function OrderPage() {
   const Username = useSelector((state) => state.user.current.username);
   const history = useHistory();
 
-  const dataExportInvoice = (data) => {
+  const dataHoaDonXuat = (data) => {
     return {
-      SoLuongXuat: data.SLSP,
       NgayLapHDX: yyyy + "" + mm + "" + dd,
       TrangThaiHD: 1, // Da thanh toan: 1, Chua thanh toan: -1, Dang xac nhan: 0
       MaKH: "1",
-      MaSP: data.MaSP,
       MaKhoHang: "1",
-      vnp_TransactionNo: searchParams.get("vnp_TransactionNo"),
     };
   };
+
+  const dataChiTietHDX = (data, MaHDX) => {
+    return {
+      MaHDX: MaHDX,
+      SoLuongXuat: data.SLSP,
+      MaSP: data.MaSP,
+    };
+  };
+
+  const [dataOrder, setDataOrder] = useState("");
+  const [data, setData] = useState([]);
+  const [sumorder, setSumorder] = useState("");
+
+  const formatNumber = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (urlPay) {
-          var i = 0;
-          const dta = await vnPayAPI.getData(urlPay);
-          if (dta.code === "00") {
-            const dataProductCart = await cartAPI.findAll(Username);
-            console.log(dataProductCart);
-            for (i = 0; i < dataProductCart.length; i++) {
-              await exportInvoiceAPI.create(dataExportInvoice(dataProductCart[i]));
-            }
-            setTimeout(() => {}, 1000);
-            await cartAPI.DeleteAll(Username);
-            history.push("/order");
-            console.log(urlPay);
+        // if (urlPay) {
+        //   const data = await vnPayAPI.getData(urlPay);
+        //   if (data.code === "00") {
+        const dataProductCart = await cartAPI.findAll(Username);
+        //     await exportInvoiceAPI.create(dataHoaDonXuat(dataProductCart));
+        //     const MaHDX = await exportInvoiceAPI.findMaHDX();
+        //     for(i; i < dataProductCart.length; i++){
+        //       await ChiTietHoaDonXuatAPI.create(dataChiTietHDX(dataProductCart[i], MaHDX[0].MaHDX))
+        //     }
+        //     setTimeout(() => {}, 1000);
+        //     history.push("/order");
+        //     await cartAPI.DeleteAll(Username);
+        //   }
+        // } else return;
+        const dataKhachHang = await KhachHangAPI.findAll(Username);
+        setDataKhachHang(dataKhachHang[0]);
+        const data2 = await exportInvoiceAPI.findAll(dataKhachHang[0].MaKH);
+        setData(data2);
+        let i = 0;
+        for (i; i < data2.length; i++) {
+          const data4 = await ChiTietHoaDonXuatAPI.sumOrder(data2[i].MaHDX);
+          if (data4) {
+            setSumorder((sumorder) => [...sumorder, data4]);
           }
-        } else return;
-        // return <Redirect to="/order" />
+          const data3 = await ChiTietHoaDonXuatAPI.findMHD(data2[i].MaHDX);
+          if (data3) {
+            setDataOrder((dataOrder) => [...dataOrder, data3]);
+          }
+        }
+        // const MaHDX = await exportInvoiceAPI.findMaHDX();
+        // console.log(MaHDX);
+        // const data = await ChiTietHoaDonXuatAPI.findMHD(MaHDX[0].MaHDX);
+        // console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -74,21 +109,78 @@ function OrderPage() {
     fetchData(); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (sumorder) {
+    console.log(sumorder);
+    console.log(sumorder[0][0].SUM_ORDER);
+  }
+
   return (
     <div className="container_orderpage">
       <div>
         <h2>HÓA ĐƠN CỦA BẠN</h2>
-        <div>
+        {!!dataKhachHang ? (
           <Row>
-            <Col>tên khách hàng</Col>
-            <Col>địa chỉ</Col>
-            <Col>sdt</Col>
-            <Col>email</Col>
-            <Col>Tên sản phẩm - số lượng</Col>
-            <Col>giá</Col>
-            <Col>trang thái đơn hàng</Col>
+            <Col span={16}>
+              {!!dataOrder &&
+                dataOrder.map((items, i) => {
+                  return (
+                    <div className="item_order" key={i}>
+                      <div>
+                        {data[i].TrangThaiHD === 1 ? (
+                          <p>
+                            <i>Đã thanh toán</i>
+                          </p>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                      <div>
+                        {data[i].TrangThaiHD === 0 ? (
+                          <p>
+                            <i>Đang xác nhận</i>
+                          </p>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                      <div key={i}>
+                        {items.map((subItems, index) => {
+                          return (
+                            <div key={index}>
+                              <p>
+                                {subItems.TenSP} x {subItems.SoLuongXuat}
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div>{/* <strong>Tổng hóa đơn: </strong> {sumorder[i][i].SUM_ORDER ? formatNumber.format(sumorder[i][i].SUM_ORDER) : <></>} */}</div>
+                    </div>
+                  );
+                })}
+            </Col>
+            <Col span={8}>
+              <div className="info_profile">
+                <p>
+                  <strong>Tên khách hàng:</strong> {dataKhachHang.TenKH}
+                </p>
+                <p>
+                  <strong>Số điện thoại:</strong> {dataKhachHang.SDT}
+                </p>
+                <p>
+                  <strong>Email:</strong> {dataKhachHang.Email}
+                </p>
+                <p>
+                  <strong>Địa chỉ:</strong> {dataKhachHang.DiaChi}
+                </p>
+              </div>
+            </Col>
           </Row>
-        </div>
+        ) : (
+          <>
+            <p>BẠN CHƯA CÓ HÓA ĐƠN NÀO</p>
+          </>
+        )}
       </div>
     </div>
   );

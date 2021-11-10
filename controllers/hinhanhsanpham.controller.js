@@ -1,4 +1,4 @@
-const Size = require("../models/size.model");
+const Image = require("../models/hinhanhsanpham.model");
 
 module.exports = {
   create: (req, res) => {
@@ -8,22 +8,22 @@ module.exports = {
       });
     }
 
-    const size = new Size({
-      ID: req.body.ID,
-      KichThuocSP: req.body.KichThuocSP,
+    const image = new Image({
+      HinhAnhSP: req.file.path,
+      MaSP: req.body.MaSP,
     });
 
-    Size.create(size, (err, data) => {
+    Image.create(image, (err, data) => {
       if (err) res.status(500).send({message: err.message || "some err"});
       else res.status(200).send(data);
     });
   },
 
   findOne: (req, res) => {
-    Size.find(req.params.ID, (err, data) => {
+    Image.find(req.params.MaSP, (err, data) => {
       if (err) {
         res.status(404).send({
-          message: `Not found id ${req.params.ID}.`,
+          message: `Not found Customer with id ${req.params.MaSP}.`,
         });
       } else {
         res.status(200).send(data);
@@ -32,22 +32,22 @@ module.exports = {
   },
 
   findAll: (req, res) => {
-    Size.getAll((err, data) => {
+    Image.getAll((err, data) => {
       if (err)
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving size.",
+            err.message || "Some error occurred while retrieving customers.",
         });
       else res.status(200).send(data);
     });
   },
 
   delete: (req, res) => {
-    Size.delete(req.params.ID, (err, data) => {
+    Image.delete(req.params.MaSP, (err, data) => {
       if (err)
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving size.",
+            err.message || "Some error occurred while retrieving product.",
         });
       else res.status(200).send({
         message: "Success!"

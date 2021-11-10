@@ -10,3 +10,7 @@ Content-Type: application/json
   "MaKH": "1",
   "MaKhoHang": "1",
 }
+
+###
+
+GET http://localhost:3001/api/chitiethoadonxuat/SumOrder/MaHDX=43

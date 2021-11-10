@@ -9,14 +9,14 @@ const Customer = function (customer) {
   this.Username = customer.Username;
 };
 
-Customer.create = ( newCustomer, result) => {
+Customer.create = (newCustomer, result) => {
   sql.query("INSERT INTO KhachHang SET ?", newCustomer, (err, res) => {
     if (err) {
       console.log("err" + err);
       return res(err, null);
     }
     console.log("Create successfully!");
-    result(null, { ...newCustomer });
+    result(null);
   });
 };
 
@@ -29,36 +29,39 @@ Customer.find = (MaKH, result) => {
 
     if (res.length > 0) {
       result(null, res);
-    }else{
-      result(null)
+    } else {
+      result(null);
     }
   });
 };
 
-Customer.getAll = (result) => {
-  sql.query("SELECT * FROM KhachHang", (err, res) => {
+Customer.getAll = (Username, result) => {
+  console.log(Username)
+  sql.query(`SELECT * FROM KhachHang WHERE Username='${Username}'`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
       return;
     }
-    result(null, res);
+    if (res.length > 0) {
+      console.log("Success!");
+      result(null, res);
+    } else {
+      result(null);
+    }
   });
 };
 
 Customer.delete = (MaKH, result) => {
-  sql.query(
-    "DELETE FROM Image WHERE MaSP=?", MaKH,
-    (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
-      }
-      console.log("Success!");
-      result(null);
+  sql.query("DELETE FROM Image WHERE MaSP=?", MaKH, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
     }
-  );
+    console.log("Success!");
+    result(null);
+  });
 };
 
 module.exports = Customer;

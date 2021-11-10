@@ -1,6 +1,6 @@
 
 module.exports = (app) => {
-  const wareHouse = require("../controllers/wareHouse.controller");
+  const wareHouse = require("../controllers/khohang.controller");
 
   app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");

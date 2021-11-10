@@ -2,7 +2,7 @@ const verifyLogin = require("../middleware/authJwt");
 
 // client gửi yêu cầu tới user.routes
 module.exports = (app) => {
-  const user = require("../controllers/user.controller");
+  const user = require("../controllers/taikhoan.controller");
 
   app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");

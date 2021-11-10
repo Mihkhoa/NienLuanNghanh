@@ -12,7 +12,7 @@ const fileStore = multer.diskStorage({
 const upload = multer({ storage: fileStore });
 
 module.exports = (app) => {
-  const image = require("../controllers/image.controller");
+  const image = require("../controllers/hinhanhsanpham.controller");
 
   app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");

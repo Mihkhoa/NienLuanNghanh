@@ -1,4 +1,4 @@
-const Customer = require("../models/customer.model");
+const Customer = require("../models/khachhang.model");
 
 module.exports = {
   create: (req, res) => {
@@ -37,10 +37,10 @@ module.exports = {
   },
 
   findAll: (req, res) => {
-    Customer.getAll((err, data) => {
+    Customer.getAll(req.params.Username, (err, data) => {
       if (err)
         res.status(500).send({
-          message: err.message || "Some error occurred while retrieving customers.",
+          message: err.message || "Some error",
         });
       else res.status(200).send(data);
     });

@@ -6,10 +6,13 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import AuthRoute from "./AuthRoute";
 
 const LandingPage = React.lazy(() => import("./features/Home"));
+const Header = React.lazy(() => import("./components/Header"));
+
 const LoginPage = React.lazy(() => import("./features/Login"));
 const RegisterPage = React.lazy(() => import("./features/Register"));
+
 const ManagePage = React.lazy(() => import("./features/Manage"));
-const Header = React.lazy(() => import("./components/Header"));
+
 const ProductPage = React.lazy(() => import("./features/ProductPage"));
 const InfoProductPage = React.lazy(() => import("./features/InfoProduct"));
 const CartPage = React.lazy(() => import("./features/cart"));

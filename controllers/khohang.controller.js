@@ -1,4 +1,4 @@
-const Image = require("../models/image.model");
+const WareHouse = require("../models/khohang.model");
 
 module.exports = {
   create: (req, res) => {
@@ -8,22 +8,25 @@ module.exports = {
       });
     }
 
-    const image = new Image({
-      HinhAnhSP: req.file.path,
-      MaSP: req.body.MaSP,
+    const wareHouse = new WareHouse({
+      MaKhoHang: req.body.MaKhoHang,
+      TenKhoHang: req.body.TenKhoHang,
+      DiaChiKhoHang: req.body.DiaChiKhoHang,
+      SDTKhoHang: req.body.SDTKhoHang,
+      MaLSP: req.body.MaLSP,
     });
 
-    Image.create(image, (err, data) => {
+    WareHouse.create( wareHouse, (err, data) => {
       if (err) res.status(500).send({message: err.message || "some err"});
       else res.status(200).send(data);
     });
   },
 
   findOne: (req, res) => {
-    Image.find(req.params.MaSP, (err, data) => {
+    WareHouse.find(req.params.MaKhoHang, (err, data) => {
       if (err) {
         res.status(404).send({
-          message: `Not found Customer with id ${req.params.MaSP}.`,
+          message: `Not found Customer with id ${req.params.MaKhoHang}.`,
         });
       } else {
         res.status(200).send(data);
@@ -32,7 +35,7 @@ module.exports = {
   },
 
   findAll: (req, res) => {
-    Image.getAll((err, data) => {
+    WareHouse.getAll((err, data) => {
       if (err)
         res.status(500).send({
           message:
@@ -43,7 +46,7 @@ module.exports = {
   },
 
   delete: (req, res) => {
-    Image.delete(req.params.MaSP, (err, data) => {
+    WareHouse.delete(req.params.MaKhoHang, (err, data) => {
       if (err)
         res.status(500).send({
           message:

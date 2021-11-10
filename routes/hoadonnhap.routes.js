@@ -1,6 +1,6 @@
 
 module.exports = (app) => {
-  const importInvoice = require("../controllers/importInvoice.controller");
+  const importInvoice = require("../controllers/hoadonnhap.controller");
 
   app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");

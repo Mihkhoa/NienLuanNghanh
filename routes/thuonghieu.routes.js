@@ -1,6 +1,6 @@
 
 module.exports = (app) => {
-  const trademark = require("../controllers/tradeMark.controller");
+  const trademark = require("../controllers/thuonghieu.controller");
 
   app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");

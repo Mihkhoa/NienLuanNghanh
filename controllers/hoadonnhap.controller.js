@@ -1,4 +1,4 @@
-const TradeMark = require("../models/tradeMark.model");
+const ImportInvoice = require("../models/hoadonnhap.model");
 
 module.exports = {
   create: (req, res) => {
@@ -8,22 +8,25 @@ module.exports = {
       });
     }
 
-    const trademark = new TradeMark({
-      MaTH: req.body.MaTH,
-      TenTH: req.body.TenTH,
+    const importinvoice = new ImportInvoice({
+      NgayLapHDN: req.body.NgayLapHDN,
+      SoLuongNhap: req.body.SoLuongNhap,
+      GiaSPN: req.body.GiaSPN,
+      MaKhoHang: req.body.MaKhoHang,
+      MaSP: req.body.MaSP,
     });
 
-    TradeMark.create(trademark, (err, data) => {
+    ImportInvoice.create(importinvoice, (err, data) => {
       if (err) res.status(500).send({message: err.message || "some err"});
       else res.status(200).send(data);
     });
   },
 
-  findOne: (req, res) => {
-    TradeMark.find(req.params.MaTH, (err, data) => {
+  findOneProduct: (req, res) => {
+    ImportInvoice.findProduct(req.params.MaSP, (err, data) => {
       if (err) {
         res.status(404).send({
-          message: `Not found Customer with id ${req.params.MaTH}.`,
+          message: `Not found.`,
         });
       } else {
         res.status(200).send(data);
@@ -32,7 +35,7 @@ module.exports = {
   },
 
   findAll: (req, res) => {
-    TradeMark.getAll((err, data) => {
+    ImportInvoice.getAll((err, data) => {
       if (err)
         res.status(500).send({
           message:
@@ -43,15 +46,16 @@ module.exports = {
   },
 
   delete: (req, res) => {
-    TradeMark.delete(req.params.MaTH, (err, data) => {
+    ImportInvoice.delete(req.params.MaHDN, (err, data) => {
       if (err)
         res.status(500).send({
           message:
             err.message || "Some error occurred while retrieving product.",
         });
-      else res.status(200).send({
-        message: "Success!"
-      });
+      else
+        res.status(200).send({
+          message: "Success!",
+        });
     });
   },
 };

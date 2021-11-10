@@ -1,3 +1,27 @@
 .container_orderpage {
+  width: 60%;
   margin-top: 150px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container_orderpage h2 {
+  text-align: center;
+}
+
+.item_order + .item_order{
+  margin-top: 30px;
+}
+
+.item_order{
+  background-color: rgb(231, 231, 231);
+  padding: 20px;
+  margin: 0 20px;
+  border-radius: 5px;
+}
+
+.info_profile{
+  background-color: aquamarine;
+  padding: 10px;
+  border-radius: 5px;
 }

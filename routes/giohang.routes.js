@@ -1,6 +1,6 @@
 
 module.exports = (app) => {
-  const cart = require("../controllers/cart.controller");
+  const cart = require("../controllers/giohang.controller");
 
   app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");

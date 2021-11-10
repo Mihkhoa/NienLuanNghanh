@@ -1,6 +1,6 @@
 
 module.exports = (app) => {
-  const size = require("../controllers/size.controller");
+  const size = require("../controllers/kichthuocsanpham.controller");
 
   app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");

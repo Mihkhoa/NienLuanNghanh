@@ -1,4 +1,4 @@
-const ImportInvoice = require("../models/importInvoice.model");
+const ProductType = require("../models/loaisanpham.model");
 
 module.exports = {
   create: (req, res) => {
@@ -8,25 +8,34 @@ module.exports = {
       });
     }
 
-    const importinvoice = new ImportInvoice({
-      NgayLapHDN: req.body.NgayLapHDN,
-      SoLuongNhap: req.body.SoLuongNhap,
-      GiaSPN: req.body.GiaSPN,
-      MaKhoHang: req.body.MaKhoHang,
-      MaSP: req.body.MaSP,
+    const producttype = new ProductType({
+      MaLSP: req.body.MaLSP,
+      TenLSP: req.body.TenLSP,
     });
 
-    ImportInvoice.create(importinvoice, (err, data) => {
+    ProductType.create(producttype, (err, data) => {
       if (err) res.status(500).send({message: err.message || "some err"});
       else res.status(200).send(data);
     });
   },
 
-  findOneProduct: (req, res) => {
-    ImportInvoice.findProduct(req.params.MaSP, (err, data) => {
+  findOne: (req, res) => {
+    ProductType.find(req.params.MaLSP, (err, data) => {
       if (err) {
         res.status(404).send({
-          message: `Not found.`,
+          message: `Not found Customer with id ${req.params.MaLSP}.`,
+        });
+      } else {
+        res.status(200).send(data);
+      }
+    });
+  },
+
+  WareHouse: (req, res) => {
+    ProductType.innerJoinWareHouse(req.params.MaLSP, (err, data) => {
+      if (err) {
+        res.status(404).send({
+          message: `Not found Customer with id ${req.params.MaLSP}.`,
         });
       } else {
         res.status(200).send(data);
@@ -35,7 +44,7 @@ module.exports = {
   },
 
   findAll: (req, res) => {
-    ImportInvoice.getAll((err, data) => {
+    ProductType.getAll((err, data) => {
       if (err)
         res.status(500).send({
           message:
@@ -46,7 +55,7 @@ module.exports = {
   },
 
   delete: (req, res) => {
-    ImportInvoice.delete(req.params.MaHDN, (err, data) => {
+    ProductType.delete(req.params.MaLSP, (err, data) => {
       if (err)
         res.status(500).send({
           message:

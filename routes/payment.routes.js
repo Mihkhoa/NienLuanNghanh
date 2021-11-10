@@ -17,19 +17,19 @@ module.exports = (app) => {
     const today = new Date();
 
     const yyyy = today.getFullYear();
-    const dd = today.getDate() < 9 ? "0" + today.getDate() : today.getDate();
-    const mm = today.getMonth() + 1 < 9 ? "0" + (today.getMonth() + 1) : today.getMonth() + 1;
+    const dd = today.getDate() < 10 ? "0" + today.getDate() : today.getDate();
+    const mm = today.getMonth() + 1 < 10 ? "0" + (today.getMonth() + 1) : today.getMonth() + 1;
 
-    const HH = today.getHours() < 9 ? "0" + today.getHours() : today.getHours();
-    const ss = today.getSeconds() < 9 ? "0" + today.getSeconds() : today.getSeconds();
-    const MM = today.getMinutes() < 9 ? "0" + today.getMinutes() : today.getMinutes();
+    const HH = today.getHours() < 10 ? "0" + today.getHours() : today.getHours();
+    const ss = today.getSeconds() < 10 ? "0" + today.getSeconds() : today.getSeconds();
+    const MM = today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes();
 
     var createDate = yyyy + "" + mm + "" + dd + "" + HH + "" + MM + "" + ss;
     var orderId = HH + "" + MM + "" + ss;
     var amount = req.body.amount;
     var bankCode = req.body.bankCode;
-
-    var orderInfo = req.body.orderDescription;
+    
+    var orderInfo = "hanh toan hoa don ngay"+dd+"thang"+mm+"nam"+yyyy+"-"+HH+"gio"+MM+"phut"+ss+"giay";
     var orderType = req.body.orderType;
     var locale = req.body.language;
     if (locale === null || locale === "") {
@@ -69,7 +69,7 @@ module.exports = (app) => {
   app.get("/vnpay_return", function (req, res, next) {
     var vnp_Params = req.query;
 
-    var secureHash  = vnp_Params["vnp_SecureHash"];
+    var secureHash = vnp_Params["vnp_SecureHash"];
 
     delete vnp_Params["vnp_SecureHash"];
     delete vnp_Params["vnp_SecureHashType"];
@@ -88,42 +88,39 @@ module.exports = (app) => {
 
     if (secureHash === signed) {
       //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
-      
+
       res.status(200).send({code: vnp_Params["vnp_ResponseCode"]});
     } else {
       res.status(200).send({code: "97"});
-
     }
   });
 
-  app.get('/vnpay_ipn', function (req, res, next) {
+  app.get("/vnpay_ipn", function (req, res, next) {
     const sql = require("../models/db");
     var vnp_Params = req.query;
-    var secureHash = vnp_Params['vnp_SecureHash'];
+    var secureHash = vnp_Params["vnp_SecureHash"];
 
-    delete vnp_Params['vnp_SecureHash'];
-    delete vnp_Params['vnp_SecureHashType'];
+    delete vnp_Params["vnp_SecureHash"];
+    delete vnp_Params["vnp_SecureHashType"];
 
     vnp_Params = sortObject(vnp_Params);
-    var config = require('config');
-    var secretKey = config.get('vnp_HashSecret');
-    var querystring = require('qs');
-    var signData = querystring.stringify(vnp_Params, { encode: false });
-    var crypto = require("crypto");     
+    var config = require("config");
+    var secretKey = config.get("vnp_HashSecret");
+    var querystring = require("qs");
+    var signData = querystring.stringify(vnp_Params, {encode: false});
+    var crypto = require("crypto");
     var hmac = crypto.createHmac("sha512", secretKey);
-    var signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");     
-     
+    var signed = hmac.update(new Buffer.from(signData, "utf-8")).digest("hex");
 
-    if(secureHash === signed){
-        var orderId = vnp_Params['vnp_TxnRef'];
-        var rspCode = vnp_Params['vnp_ResponseCode'];
-        //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
-        res.status(200).json({RspCode: '00', Message: 'success'})
+    if (secureHash === signed) {
+      var orderId = vnp_Params["vnp_TxnRef"];
+      var rspCode = vnp_Params["vnp_ResponseCode"];
+      //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
+      res.status(200).json({RspCode: "00", Message: "success"});
+    } else {
+      res.status(200).json({RspCode: "97", Message: "Fail checksum"});
     }
-    else {
-        res.status(200).json({RspCode: '97', Message: 'Fail checksum'})
-    }
-});
+  });
 
   const sortObject = (obj) => {
     var sorted = {};

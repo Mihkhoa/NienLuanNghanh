@@ -1,4 +1,4 @@
-const ProductType = require("../models/productType.model");
+const TradeMark = require("../models/thuonghieu.model");
 
 module.exports = {
   create: (req, res) => {
@@ -8,34 +8,22 @@ module.exports = {
       });
     }
 
-    const producttype = new ProductType({
-      MaLSP: req.body.MaLSP,
-      TenLSP: req.body.TenLSP,
+    const trademark = new TradeMark({
+      MaTH: req.body.MaTH,
+      TenTH: req.body.TenTH,
     });
 
-    ProductType.create(producttype, (err, data) => {
+    TradeMark.create(trademark, (err, data) => {
       if (err) res.status(500).send({message: err.message || "some err"});
       else res.status(200).send(data);
     });
   },
 
   findOne: (req, res) => {
-    ProductType.find(req.params.MaLSP, (err, data) => {
+    TradeMark.find(req.params.MaTH, (err, data) => {
       if (err) {
         res.status(404).send({
-          message: `Not found Customer with id ${req.params.MaLSP}.`,
-        });
-      } else {
-        res.status(200).send(data);
-      }
-    });
-  },
-
-  WareHouse: (req, res) => {
-    ProductType.innerJoinWareHouse(req.params.MaLSP, (err, data) => {
-      if (err) {
-        res.status(404).send({
-          message: `Not found Customer with id ${req.params.MaLSP}.`,
+          message: `Not found Customer with id ${req.params.MaTH}.`,
         });
       } else {
         res.status(200).send(data);
@@ -44,7 +32,7 @@ module.exports = {
   },
 
   findAll: (req, res) => {
-    ProductType.getAll((err, data) => {
+    TradeMark.getAll((err, data) => {
       if (err)
         res.status(500).send({
           message:
@@ -55,16 +43,15 @@ module.exports = {
   },
 
   delete: (req, res) => {
-    ProductType.delete(req.params.MaLSP, (err, data) => {
+    TradeMark.delete(req.params.MaTH, (err, data) => {
       if (err)
         res.status(500).send({
           message:
             err.message || "Some error occurred while retrieving product.",
         });
-      else
-        res.status(200).send({
-          message: "Success!",
-        });
+      else res.status(200).send({
+        message: "Success!"
+      });
     });
   },
 };

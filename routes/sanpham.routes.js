@@ -1,6 +1,6 @@
 
 module.exports = (app) => {
-  const product = require("../controllers/product.controller");
+  const product = require("../controllers/sanpham.controller");
 
   app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");

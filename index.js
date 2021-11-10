@@ -12,15 +12,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Router init
-require("./routes/user.routes")(app);
-require("./routes/product.routes")(app);
-require("./routes/typeProduct.routes")(app);
-require("./routes/image.routes")(app);
-require("./routes/size.routes")(app);
-require("./routes/tradeMark.routes")(app);
-require("./routes/importInvoice.routes")(app);
-require("./routes/exportInvoice.routes")(app);
-require("./routes/cart.routes")(app);
+require("./routes/taikhoan.routes")(app);
+require("./routes/sanpham.routes")(app);
+require("./routes/loaisanpham.routes")(app);
+require("./routes/hinhanhsanpham.routes")(app);
+require("./routes/kichthuocsanpham.routes")(app);
+require("./routes/thuonghieu.routes")(app);
+require("./routes/hoadonnhap.routes")(app);
+require("./routes/hoadonxuat.routes")(app);
+require("./routes/chitiethoadonxuat.routes")(app);
+require("./routes/giohang.routes")(app);
+require("./routes/khachhang.routes")(app);
 require("./routes/payment.routes")(app);
 
 app.listen(PORT, () => {

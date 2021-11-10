@@ -1,4 +1,4 @@
-const Cart = require("../models/cart.model");
+const Cart = require("../models/giohang.model");
 
 module.exports = {
   create: (req, res) => {

@@ -24,7 +24,8 @@ const MenuPage = () => {
             </Menu.Item>
           </SubMenu>
           <SubMenu key="sub2" icon={<FileTextOutlined />} title="HÓA ĐƠN">
-            <Menu.Item key="3">Danh sách hóa đơn</Menu.Item>
+            <Menu.Item key="3">
+            <NavLink to="/manage/list_orders">Danh sách hóa đơn</NavLink></Menu.Item>
             <Menu.Item key="4">Đơn hủy</Menu.Item>
           </SubMenu>
           <SubMenu key="sub3" icon={<HomeOutlined />} title="KHO HÀNG">

@@ -1,5 +1,5 @@
 module.exports = (app) => {
-  const productType = require("../controllers/productType.controller");
+  const productType = require("../controllers/loaisanpham.controller");
 
   app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");

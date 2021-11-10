@@ -1,4 +1,4 @@
-const ExportInvoice = require("../models/exportInvoice.model");
+const ExportInvoice = require("../models/hoadonxuat.model");
 
 module.exports = {
   create: (req, res) => {
@@ -9,13 +9,10 @@ module.exports = {
     }
 
     const exportInvoice = new ExportInvoice({
-      SoLuongXuat: req.body.SoLuongXuat,
       NgayLapHDX: req.body.NgayLapHDX,
       TrangThaiHD: req.body.TrangThaiHD,
-      MaSP: req.body.MaSP,
       MaKH: req.body.MaKH,
       MaKhoHang: req.body.MaKhoHang,
-      vnp_TransactionNo: req.body.vnp_TransactionNo,
     });
 
     ExportInvoice.create(exportInvoice, (err, data) => {
@@ -36,15 +33,25 @@ module.exports = {
   //     });
   //   },
 
-  //   findAll: (req, res) => {
-  //     ExportInvoice.getAll((err, data) => {
-  //       if (err)
-  //         res.status(500).send({
-  //           message:
-  //             err.message || "Some error occurred while retrieving customers.",
-  //         });
-  //       else res.status(200).send(data);
-  //     });
+  findAll: (req, res) => {
+    ExportInvoice.getAll(req.params.MaKH, (err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Some error.",
+        });
+      else res.status(200).send(data);
+    });
+  },
+
+  findMaHDX: (req, res) => {
+    ExportInvoice.findMa((err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Some error.",
+        });
+      else res.status(200).send(data);
+    });
+  },
 
   innerJoinCustomer: (req, res) => {
     ExportInvoice.joinCustomer((err, data) => {
