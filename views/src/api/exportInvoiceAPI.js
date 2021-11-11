@@ -5,7 +5,11 @@ const exportInvoiceAPI = {
     const url = "/api/exportInvoice/add";
     return axiosClient.post(url, data);
   },
-  findAll(MaKH){
+  findAll(){
+    const url = `/api/exportInvoices`;
+    return axiosClient.get(url);
+  },
+  findMaKH(MaKH){
     const url = `/api/exportInvoices/MaKH=${MaKH}`;
     return axiosClient.get(url);
   },
@@ -16,6 +20,10 @@ const exportInvoiceAPI = {
   findMaKH(MaKH){
     const url = `/api/exportInvoice/MaKH=${MaKH}`;
     return axiosClient.get(url);
+  },
+  updateTTHD(MaHDX, data){
+    const url = `/api/exportInvoice/updateTTHD/MaHDX=${MaHDX}`;
+    return axiosClient.put(url, data);
   }
 }
 

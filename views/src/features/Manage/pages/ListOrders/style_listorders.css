@@ -1,3 +1,18 @@
 .listorder{
   padding: 0 10px;
 }
+
+.listorder .success{
+  color: green;
+  font-weight: 500;
+}
+
+.listorder .error{
+  color: red;
+  font-weight: 500;
+}
+
+.listorder .false{
+  color: #ccc;
+  font-weight: 500;
+}

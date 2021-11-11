@@ -97,7 +97,8 @@ const PaymentPage = () => {
   const dataHoaDonXuat = () => {
     return {
       NgayLapHDX: yyyy + "-" + mm + "-" + dd,
-      TrangThaiHD: 0, // Da thanh toan: 1, Chua thanh toan: -1, Dang xac nhan: 0
+      TrangThaiHD: 0, 
+      TinhTrangHD: 0,
       MaKH: dataKhachHang[0].MaKH,
       MaKhoHang: "1",
     };
@@ -113,9 +114,11 @@ const PaymentPage = () => {
 
   let i = 0;
   const paymentOffline = async () => {
+    
     if (!dataKhachHang) {
       history.push("/profile");
     } else {
+      console.log(dataKhachHang)
       const dataProductCart = await cartAPI.findAll(Username);
       await exportInvoiceAPI.create(dataHoaDonXuat());
       const MaHDX = await exportInvoiceAPI.findMaHDX();
@@ -163,7 +166,7 @@ const PaymentPage = () => {
             <div className="btn_payment">
               <Row>
                 <Col span={12}>
-                  <div className="btn_payOffline" onClick={paymentOffline}>
+                  <div className="btn_payOffline" onClick={() => paymentOffline()}>
                     <button>THANH TOÁN KHI NHẬN HÀNG</button>
                   </div>
                 </Col>

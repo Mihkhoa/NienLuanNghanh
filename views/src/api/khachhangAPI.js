@@ -8,6 +8,10 @@ const KhachHangAPI = {
   findAll(Username){
     const url = `/api/customer/Username=${Username}`;
     return axiosClient.get(url);
+  },
+  findKhacHang(MaKH){
+    const url = `/api/customer/MaKH=${MaKH}`;
+    return axiosClient.get(url);
   }
 }
 

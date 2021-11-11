@@ -104,7 +104,6 @@ module.exports = {
 
   update: (req, res) => {
     if (!req.body) {
-      console.log("KHONG CO DATA");
       res.status(400).send({
         message: "Content can not be empty!",
       });

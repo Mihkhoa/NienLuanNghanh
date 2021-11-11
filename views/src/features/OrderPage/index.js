@@ -85,7 +85,7 @@ function OrderPage() {
         // } else return;
         const dataKhachHang = await KhachHangAPI.findAll(Username);
         setDataKhachHang(dataKhachHang[0]);
-        const data2 = await exportInvoiceAPI.findAll(dataKhachHang[0].MaKH);
+        const data2 = await exportInvoiceAPI.findMaKH(dataKhachHang[0].MaKH);
         setData(data2);
         let i = 0;
         for (i; i < data2.length; i++) {

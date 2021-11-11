@@ -4,12 +4,7 @@ import moment from "moment";
 import React, {useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 import {Modal, Table, Space, Button, Row, Col} from "antd";
-import {
-  FormOutlined,
-  DeleteOutlined,
-  ExclamationCircleOutlined,
-  ProfileOutlined,
-} from "@ant-design/icons";
+import {FormOutlined, DeleteOutlined, ExclamationCircleOutlined, ProfileOutlined} from "@ant-design/icons";
 
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
@@ -202,22 +197,10 @@ const ListProducts = () => {
             <Button type="default" onClick={() => infoModalProduct(record.key)}>
               <ProfileOutlined />
             </Button>
-            <Modal
-              title={infoProduct.TenSP}
-              style={{top: 120}}
-              visible={infoModal}
-              onOk={() => setInfoModal(false)}
-              onCancel={() => setInfoModal(false)}
-              footer={null}
-              width={1000}
-            >
+            <Modal title={infoProduct.TenSP} style={{top: 120}} visible={infoModal} onOk={() => setInfoModal(false)} onCancel={() => setInfoModal(false)} footer={null} width={1000}>
               <Row>
                 <Col span={8}>
-                  <img
-                    className="productimage"
-                    src={urlImage}
-                    alt="Ảnh sản phẩm"
-                  />
+                  <img className="productimage" src={urlImage} alt="Ảnh sản phẩm" />
                 </Col>
                 <Col span={16}>
                   <Row>
@@ -243,12 +226,7 @@ const ListProducts = () => {
                       Số lượng nhập: <strong>{infoProduct.SoLuongNhap}</strong>
                     </Col>
                     <Col span={12}>
-                      Ngày nhập sản phẩm:{" "}
-                      <strong>
-                        {moment
-                          .utc(infoProduct.NgayLapHDN)
-                          .format("MM/DD/YYYY")}
-                      </strong>
+                      Ngày nhập sản phẩm: <strong>{moment.utc(infoProduct.NgayLapHDN).format("MM/DD/YYYY")}</strong>
                     </Col>
                   </Row>
                   <br />
@@ -280,15 +258,7 @@ const ListProducts = () => {
             <Button type="primary" onClick={() => editModalProduct(record.key)}>
               <FormOutlined />
             </Button>
-            <Modal
-              title={editProduct.TenSP}
-              style={{top: 120}}
-              visible={editModal}
-              onOk={() => onSubmit()}
-              onCancel={() => cancelModal()}
-              footer={null}
-              width={1000}
-            >
+            <Modal title={editProduct.TenSP} style={{top: 120}} visible={editModal} onOk={() => onSubmit()} onCancel={() => cancelModal()} footer={null} width={1000}>
               <div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="field">
@@ -308,14 +278,8 @@ const ListProducts = () => {
                       <label>Tên Sản Phẩm</label>
                     </div>
                     <div className="inputField">
-                      <input
-                        className="tensanpham"
-                        defaultValue={editProduct.TenSP}
-                        {...register("tensanpham")}
-                      />
-                      <span className="errors">
-                        {errors.tensanpham?.message}
-                      </span>
+                      <input className="tensanpham" defaultValue={editProduct.TenSP} {...register("tensanpham")} />
+                      <span className="errors">{errors.tensanpham?.message}</span>
                     </div>
                   </div>
 
@@ -324,15 +288,10 @@ const ListProducts = () => {
                       <label>Loại Sản Phẩm</label>
                     </div>
                     <div className="inputField">
-                      <select
-                        className="loaisanpham"
-                        {...register("loaisanpham")}
-                      >
+                      <select className="loaisanpham" {...register("loaisanpham")}>
                         <option value="LSP01">Giày</option>
                       </select>
-                      <span className="errors">
-                        {errors.loaisanpham?.message}
-                      </span>
+                      <span className="errors">{errors.loaisanpham?.message}</span>
                     </div>
                   </div>
 
@@ -366,9 +325,7 @@ const ListProducts = () => {
                             </option>
                           ))}
                       </select>
-                      <span className="errors">
-                        {errors.thuonghieu?.message}
-                      </span>
+                      <span className="errors">{errors.thuonghieu?.message}</span>
                     </div>
                   </div>
 
@@ -401,11 +358,7 @@ const ListProducts = () => {
                       Thông Tin <br /> Sản Phẩm
                     </div>
                     <div className="inputField">
-                      <textarea
-                        rows="5"
-                        className="thongtinsanpham"
-                        {...register("thongtinsanpham")}
-                      />
+                      <textarea rows="5" className="thongtinsanpham" {...register("thongtinsanpham")} />
                     </div>
                   </div>
 
@@ -434,18 +387,16 @@ const ListProducts = () => {
     },
   ];
 
-  const data = dataProduct?.map(
-    ({MaSP, TenSP, GiaSPX, SoLuongNhap, GiaSPN, KichThuocSP}, i) => ({
-      key: `${i}`,
-      masanpham: `${MaSP}`,
-      tensanpham: `${TenSP}`,
-      size: `${KichThuocSP}`,
-      soluongnhap: `${SoLuongNhap}`,
-      gianhap: `${GiaSPN}`,
-      giaban: `${GiaSPX}`,
-      action: `${MaSP}`,
-    }),
-  );
+  const data = dataProduct?.map(({MaSP, TenSP, GiaSPX, SoLuongNhap, GiaSPN, KichThuocSP}, i) => ({
+    key: `${i}`,
+    masanpham: `${MaSP}`,
+    tensanpham: `${TenSP}`,
+    size: `${KichThuocSP}`,
+    soluongnhap: `${SoLuongNhap}`,
+    gianhap: `${GiaSPN}`,
+    giaban: `${GiaSPX}`,
+    action: `${MaSP}`,
+  }));
 
   return (
     <div className="container">

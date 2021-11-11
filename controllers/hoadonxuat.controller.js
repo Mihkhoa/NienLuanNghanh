@@ -9,8 +9,9 @@ module.exports = {
     }
 
     const exportInvoice = new ExportInvoice({
-      NgayLapHDX: req.body.NgayLapHDX,
       TrangThaiHD: req.body.TrangThaiHD,
+      NgayLapHDX: req.body.NgayLapHDX,
+      TinhTrangHD: req.body.TinhTrangHD,
       MaKH: req.body.MaKH,
       MaKhoHang: req.body.MaKhoHang,
     });
@@ -33,8 +34,18 @@ module.exports = {
   //     });
   //   },
 
+  findMaKH: (req, res) => {
+    ExportInvoice.getMaKH(req.params.MaKH, (err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Some error.",
+        });
+      else res.status(200).send(data);
+    });
+  },
+
   findAll: (req, res) => {
-    ExportInvoice.getAll(req.params.MaKH, (err, data) => {
+    ExportInvoice.getAll((err, data) => {
       if (err)
         res.status(500).send({
           message: err.message || "Some error.",
@@ -44,7 +55,7 @@ module.exports = {
   },
 
   findMaHDX: (req, res) => {
-    ExportInvoice.findMa((err, data) => {
+    ExportInvoice.getMaHDX((err, data) => {
       if (err)
         res.status(500).send({
           message: err.message || "Some error.",
@@ -76,4 +87,24 @@ module.exports = {
   //         });
   //     });
   //   },
+  updateTTHD: (req, res) => {
+    if (!req.body) {
+      res.status(400).send({
+        message: "Content can not be empty!",
+      });
+    }
+    ExportInvoice.upTrangThaiHD(new ExportInvoice(req.body), req.params.MaHDX, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found.`,
+          });
+        } else {
+          res.status(500).send({
+            message: "Error updating",
+          });
+        }
+      } else res.send(data);
+    });
+  },
 };

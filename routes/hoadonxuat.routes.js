@@ -9,9 +9,13 @@ module.exports = (app) => {
 
   app.post("/api/exportInvoice/add", exportInvoice.create);
 
-  app.get("/api/exportInvoices/MaKH=:MaKH", exportInvoice.findAll);
+  app.get("/api/exportInvoices/MaKH=:MaKH", exportInvoice.findMaKH);
+
+  app.get("/api/exportInvoices", exportInvoice.findAll);
 
   app.get("/api/exportInvoice/MaHDX", exportInvoice.findMaHDX);
+
+  app.put("/api/exportInvoice/updateTTHD/MaHDX=:MaHDX", exportInvoice.updateTTHD);
 
   app.get("/api/innerjoin/exportInvoices/customer=:customer", exportInvoice.innerJoinCustomer);
 

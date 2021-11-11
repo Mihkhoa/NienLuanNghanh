@@ -2,14 +2,14 @@
 POST http://localhost:3001/api/exportInvoice/add
 Content-Type: application/json
 
-{
-  "SoLuongXuat": "7",
-  "NgayLapHDX": "2000-2-30",
-  "TrangThaiHD": "1",
-  "MaSP": "SP003",
-  "MaKH": "1",
-  "MaKhoHang": "1",
-}
+ {
+
+      "NgayLapHDX": "10-08-2000",
+      "TrangThaiHD": 0, 
+      "TinhTrangHD": 0,
+      "MaKH": "1",
+      "MaKhoHang": "1",
+    }
 
 ###
 

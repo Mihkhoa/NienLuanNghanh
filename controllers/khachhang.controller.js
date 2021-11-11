@@ -28,7 +28,7 @@ module.exports = {
     Customer.find(req.params.MaKH, (err, data) => {
       if (err) {
         res.status(404).send({
-          message: `Not found Customer with id ${req.params.MaKH}.`,
+          message: `Not found.`,
         });
       } else {
         res.status(200).send(data);
