@@ -1,7 +1,7 @@
 import "./header.css";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 
-import {UserOutlined, ShoppingCartOutlined} from "@ant-design/icons";
+import {UserOutlined, ShoppingCartOutlined, BellOutlined} from "@ant-design/icons";
 import {Badge, Menu, Dropdown} from "antd";
 
 import {NavLink, useHistory} from "react-router-dom";
@@ -10,7 +10,6 @@ import {logout} from "../../store/userSlide";
 import cartAPI from "../../api/cartAPI";
 
 function Header() {
-
   const [number, setNumber] = useState("");
 
   const isLogin = useSelector((state) => state.user.current.username);
@@ -27,19 +26,19 @@ function Header() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if(!isLogin) return;
+        if (!isLogin) return;
         const numberProduct = await cartAPI.sumProduct(isLogin);
-        if(numberProduct){
+        if (numberProduct) {
           setNumber(numberProduct[0].SLSanPham);
-        }else{
+        } else {
           setNumber(0);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     };
     fetchData();
-  }, [isLogin])
+  }, [isLogin]);
   const menuUser = (
     <Menu>
       <Menu.Item key="0">
@@ -62,8 +61,8 @@ function Header() {
     </Menu>
   );
 
-  if(number){
-    console.log(number)
+  if (number) {
+    console.log(number);
   }
 
   return (
@@ -123,6 +122,11 @@ function Header() {
             <>
               <div className="header_user">
                 <div>
+                  <Badge status="error" count={2} overflowCount={10}>
+                    <BellOutlined style={{fontSize: "28px", color: "#fff"}} />
+                  </Badge>
+                </div>
+                <div>
                   <NavLink to="/cart">
                     <Badge status="error" count={number} overflowCount={10}>
                       <ShoppingCartOutlined style={{fontSize: "28px", color: "#fff"}} />
@@ -130,16 +134,8 @@ function Header() {
                   </NavLink>
                 </div>
                 <div>
-                  <Dropdown
-                    overlay={menuUser}
-                    trigger={["click"]}
-                    placement="bottomCenter"
-                  >
-                    <span
-                      href="#"
-                      className="ant-dropdown-link"
-                      onClick={(e) => e.preventDefault()}
-                    >
+                  <Dropdown overlay={menuUser} trigger={["click"]} placement="bottomCenter">
+                    <span href="#" className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
                       <UserOutlined style={{fontSize: "28px", color: "#fff"}} />
                     </span>
                   </Dropdown>
@@ -155,16 +151,8 @@ function Header() {
               <div className="header_user">
                 <div></div>
                 <div>
-                  <Dropdown
-                    overlay={menuAdmin}
-                    trigger={["click"]}
-                    placement="bottomCenter"
-                  >
-                    <span
-                      href="#"
-                      className="ant-dropdown-link"
-                      onClick={(e) => e.preventDefault()}
-                    >
+                  <Dropdown overlay={menuAdmin} trigger={["click"]} placement="bottomCenter">
+                    <span href="#" className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
                       <UserOutlined style={{fontSize: "28px", color: "#fff"}} />
                     </span>
                   </Dropdown>

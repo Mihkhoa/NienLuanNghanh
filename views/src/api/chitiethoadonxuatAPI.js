@@ -12,6 +12,14 @@ const ChiTietHoaDonXuatAPI = {
   sumOrder(MaHDX){
     const url = `/api/chitiethoadonxuat/SumOrder/MaHDX=${MaHDX}`;
     return axiosClient.get(url);
+  },
+  findMaSP(MaSP){
+    const url = `/api/chitiethoadonxuat/findMaSP/MaSP=${MaSP}`;
+    return axiosClient.get(url);
+  },
+  groupByMaSP(){
+    const url = "/api/chitiethoadonxuat/GroupBy/MaSP";
+    return axiosClient.get(url);
   }
 };
 

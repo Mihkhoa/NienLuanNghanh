@@ -49,8 +49,32 @@ ExportInvoice.getMaKH = (MaKH, result) => {
   });
 };
 
+ExportInvoice.getDataChart = (date, todate, result) => {
+  sql.query(`SELECT * FROM HoaDonXuat WHERE NgayLapHDX BETWEEN '${date}' AND '${todate}'`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    console.log("Producer: ", res);
+    result(null, res);
+  });
+};
+
 ExportInvoice.getAll = (result) => {
   sql.query(`SELECT * FROM HoaDonXuat`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    console.log("Success!");
+    result(null, res);
+  });
+};
+
+ExportInvoice.getSumGiaSPX = (result) => {
+  sql.query(`SELECT SUM(chitiethoadonxuat.SoLuongXuat*sanpham.GiaSPX) as SUM_GiaSPX FROM ((ChiTietHoaDonXuat INNER JOIN SanPham ON ChiTietHoaDonXuat.MaSP = SanPham.MaSP) INNER JOIN HoaDonXuat ON HoaDonXuat.MaHDX = ChiTietHoaDonXuat.MaHDX)`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);

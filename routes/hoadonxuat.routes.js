@@ -9,11 +9,15 @@ module.exports = (app) => {
 
   app.post("/api/exportInvoice/add", exportInvoice.create);
 
-  app.get("/api/exportInvoices/MaKH=:MaKH", exportInvoice.findMaKH);
-
   app.get("/api/exportInvoices", exportInvoice.findAll);
 
+  app.get("/api/exportInvoices/sumGiaSPX", exportInvoice.sumGiaSPX);
+
+  app.get("/api/exportInvoices/MaKH=:MaKH", exportInvoice.findMaKH);
+  
   app.get("/api/exportInvoice/MaHDX", exportInvoice.findMaHDX);
+
+  app.get("/api/exportInvoice/date=:date/todate=:todate", exportInvoice.findDataChart);
 
   app.put("/api/exportInvoice/updateTTHD/MaHDX=:MaHDX", exportInvoice.updateTTHD);
 

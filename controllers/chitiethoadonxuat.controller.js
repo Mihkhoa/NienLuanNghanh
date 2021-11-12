@@ -33,7 +33,31 @@ module.exports = {
   },
 
   sumOrder: (req, res) => {
-    ChiTietHoaDonXuat.sumOrder(req.params.MaHDX, (err, data) => {
+    ChiTietHoaDonXuat.getSumOrder(req.params.MaHDX, (err, data) => {
+      if (err) {
+        res.status(404).send({
+          message: `Not found.`,
+        });
+      } else {
+        res.status(200).send(data);
+      }
+    });
+  },
+
+  findMaSP: (req, res) => {
+    ChiTietHoaDonXuat.getFindMaSP(req.params.MaSP, (err, data) => {
+      if (err) {
+        res.status(404).send({
+          message: `Not found.`,
+        });
+      } else {
+        res.status(200).send(data);
+      }
+    });
+  },
+
+  GroupByMaSP: (req, res) => {
+    ChiTietHoaDonXuat.getGroupByMaSP((err, data) => {
       if (err) {
         res.status(404).send({
           message: `Not found.`,

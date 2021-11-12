@@ -9,6 +9,10 @@ const exportInvoiceAPI = {
     const url = `/api/exportInvoices`;
     return axiosClient.get(url);
   },
+  sumGiaSPX(){
+    const url = `/api/exportInvoices/sumGiaSPX`;
+    return axiosClient.get(url);
+  },
   findMaKH(MaKH){
     const url = `/api/exportInvoices/MaKH=${MaKH}`;
     return axiosClient.get(url);
@@ -17,8 +21,8 @@ const exportInvoiceAPI = {
     const url = "/api/exportInvoice/MaHDX";
     return axiosClient.get(url);
   },
-  findMaKH(MaKH){
-    const url = `/api/exportInvoice/MaKH=${MaKH}`;
+  findDataChart(date, todate){
+    const url = `/api/exportInvoice/date=${date}/todate=${todate}`;
     return axiosClient.get(url);
   },
   updateTTHD(MaHDX, data){

@@ -44,8 +44,28 @@ module.exports = {
     });
   },
 
+  findDataChart: (req, res) => {
+    ExportInvoice.getDataChart(req.params.date, req.params.todate, (err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Some error.",
+        });
+      else res.status(200).send(data);
+    });
+  },
+
   findAll: (req, res) => {
     ExportInvoice.getAll((err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Some error.",
+        });
+      else res.status(200).send(data);
+    });
+  },
+
+  sumGiaSPX: (req, res) => {
+    ExportInvoice.getSumGiaSPX((err, data) => {
       if (err)
         res.status(500).send({
           message: err.message || "Some error.",

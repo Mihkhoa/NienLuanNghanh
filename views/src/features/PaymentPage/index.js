@@ -1,4 +1,5 @@
 import "./style_paymentpage.css";
+import moment from "moment";
 import React, {useEffect, useState} from "react";
 import {Row, Col, Modal, Select, Button, Form} from "antd";
 import {useSelector} from "react-redux";
@@ -21,10 +22,9 @@ const PaymentPage = () => {
   const Username = useSelector((state) => state.user.current.username);
   const history = useHistory();
 
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const dd = today.getDate() < 9 ? "0" + today.getDate() : today.getDate();
-  const mm = today.getMonth() + 1 < 9 ? "0" + (today.getMonth() + 1) : today.getMonth() + 1;
+  const date = (day) => {
+    return moment().add(day, "days").format("YYYY-MM-DD");
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -96,7 +96,7 @@ const PaymentPage = () => {
 
   const dataHoaDonXuat = () => {
     return {
-      NgayLapHDX: yyyy + "-" + mm + "-" + dd,
+      NgayLapHDX: date(0),
       TrangThaiHD: 0, 
       TinhTrangHD: 0,
       MaKH: dataKhachHang[0].MaKH,

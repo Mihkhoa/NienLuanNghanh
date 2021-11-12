@@ -11,7 +11,6 @@ const ImportInvoice = function (data) {
 ImportInvoice.create = (newImportInvoice, result) => {
   sql.query("INSERT INTO HoaDonNhap SET ?", newImportInvoice, (err, res) => {
     if (err) {
-      console.log("error" + err);
       console.log(res)
       result(null, err);
       return;
@@ -24,7 +23,6 @@ ImportInvoice.create = (newImportInvoice, result) => {
 ImportInvoice.findProduct = (MaSP, result) => {
   sql.query(`SELECT SoLuongNhap FROM HoaDonNhap WHERE MaSP = '${MaSP}'`, (err, res) => {
     if (err) {
-      console.log("error" + err);
       result(null, err);
       return;
     }
@@ -40,12 +38,21 @@ ImportInvoice.findProduct = (MaSP, result) => {
 ImportInvoice.getAll = (result) => {
   sql.query("SELECT * FROM HoaDonNhap", (err, res) => {
     if (err) {
-      console.log(result);
-      console.log("error: ", err);
       result(null, err);
       return;
     }
-    console.log("Producer: ", res);
+    console.log("Success!!!");
+    result(null, res);
+  });
+};
+
+ImportInvoice.getSumGiaSPN = (result) => {
+  sql.query("SELECT SUM(SoLuongNhap*GiaSPN) as SUM_GiaSPN FROM HoaDonNhap", (err, res) => {
+    if (err) {
+      result(null, err);
+      return;
+    }
+    console.log("Success!!!");
     result(null, res);
   });
 };
@@ -53,7 +60,6 @@ ImportInvoice.getAll = (result) => {
 ImportInvoice.delete = (MaHDN, result) => {
   sql.query("DELETE FROM HoaDonNhap WHERE MaHDN=?", MaHDN, (err, res) => {
     if (err) {
-      console.log("error: ", err);
       result(null, err);
       return;
     }

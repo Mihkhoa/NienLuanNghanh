@@ -69,10 +69,14 @@ function ListOrders() {
     setIsModalVisible(false);
   };
 
+  const date = (day) => {
+    return moment().add(day, "days").format("YYYY-MM-DD");
+  };
+
   const dataOrder = dataHDX?.map(({MaHDX, NgayLapHDX, TrangThaiHD, MaKH, TinhTrangHD}, i) => ({
     key: i,
     MaHDX: MaHDX,
-    NgayLapHDX: moment.utc(NgayLapHDX).format("MM/DD/YYYY"),
+    NgayLapHDX: moment.utc(NgayLapHDX).add(1, 'days').format("DD/MM/YYYY"),
     TrangThaiHD: TrangThaiHD,
     TinhTrangHD: TinhTrangHD,
     MaKhachHang: MaKH,

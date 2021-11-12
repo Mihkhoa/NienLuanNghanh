@@ -12,6 +12,10 @@ module.exports = (app) => {
 
   app.get("/api/chitiethoadonxuat/SumOrder/MaHDX=:MaHDX", ChiTietHoaDonXuat.sumOrder);
 
+  app.get("/api/chitiethoadonxuat/findMaSP/MaSP=:MaSP", ChiTietHoaDonXuat.findMaSP);
+
+  app.get("/api/chitiethoadonxuat/GroupBy/MaSP", ChiTietHoaDonXuat.GroupByMaSP);
+
   // app.get("/api/innerjoin/exportInvoices/customer=:customer", ChiTietHoaDonXuat.innerJoinCustomer);
 
   // app.get("/api/exportInvoice/MaSP=:MaSP", exportInvoice.findOne);

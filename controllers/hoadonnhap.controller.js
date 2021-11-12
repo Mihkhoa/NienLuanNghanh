@@ -39,7 +39,18 @@ module.exports = {
       if (err)
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving customers.",
+            err.message || "Some error.",
+        });
+      else res.status(200).send(data);
+    });
+  },
+
+  sumGiaSPN: (req, res) => {
+    ImportInvoice.getSumGiaSPN((err, data) => {
+      if (err)
+        res.status(500).send({
+          message:
+            err.message || "Some error.",
         });
       else res.status(200).send(data);
     });
