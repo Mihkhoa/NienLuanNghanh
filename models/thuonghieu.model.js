@@ -18,7 +18,7 @@ Trademark.create = (newtrademark, result) => {
 };
 
 Trademark.find = (MaTH, result) => {
-  sql.query(`SELECT * FROM ThuongHieu WHERE MaTH = '${MaTH}'`, (err, res) => {
+  sql.query(`SELECT ThuongHieu.TenTH, sanpham.GiaSPX, hinhanhsanpham.HinhAnhSP, sanpham.MaSP, sanpham.TenSP FROM ((ThuongHieu INNER JOIN SanPham ON SanPham.MaTH = ThuongHieu.MaTH) INNER JOIN hinhanhsanpham ON sanpham.MaSP = hinhanhsanpham.MaSP) WHERE ThuongHieu.MaTH = '${MaTH}'`, (err, res) => {
     if (err) {
       console.log("error" + err);
       result(null, err);

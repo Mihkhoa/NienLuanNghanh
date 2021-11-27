@@ -14,5 +14,7 @@ module.exports = (app) => {
   app.get("/api/customer/MaKH=:MaKH", KhachHang.findOne);
 
   app.delete("/api/customer/MaKH=:MaKH", KhachHang.delete);
+
+  app.put("/api/customer/updateKhachHang", KhachHang.updateKhachHang);
  
 };

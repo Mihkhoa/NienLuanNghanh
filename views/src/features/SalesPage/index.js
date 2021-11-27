@@ -1,12 +1,11 @@
 import React from 'react';
-import "./style_vnpay.css";
-import { Button } from 'antd';
+import "./style_sale.css";
 
 function SalesPage() {
 
   return (
     <div className="container_vnpay">
-      <Button type="primary" >THANH TOÁN</Button>
+      <h1>COMING SOON</h1>
     </div>
   );
 }

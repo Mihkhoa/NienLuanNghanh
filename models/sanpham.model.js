@@ -66,8 +66,24 @@ Product.getAll = (result) => {
   });
 };
 
-Product.sortBy = (SortBy, result) => {
-  sql.query(`SELECT SanPham.MaSP, SanPham.TenSP, SanPham.GiaSPX, HinhAnhSanPham.HinhAnhSP FROM SanPham INNER JOIN HinhAnhSanPham ON SanPham.MaSP = HinhAnhSanPham.MaSP ORDER BY sanpham.GiaSPX ${SortBy}`, (err, res) => {
+Product.getFilter_Sort = (Sort, result) => {
+  sql.query(`SELECT SanPham.MaSP, SanPham.TenSP, SanPham.GiaSPX, HinhAnhSanPham.HinhAnhSP FROM SanPham INNER JOIN HinhAnhSanPham ON SanPham.MaSP = HinhAnhSanPham.MaSP ORDER BY sanpham.GiaSPX ${Sort}`, (err, res) => {
+    if (err) {
+      console.log("error" + err);
+      result(null, err);
+      return;
+    }
+
+    if (res.length > 0) {
+      result(null, res);
+    } else {
+      result(null);
+    }
+  });
+};
+
+Product.getFilter_MaTH_Sort = (SortBy, MaTH, result) => {
+  sql.query(`SELECT SanPham.MaSP, SanPham.TenSP, SanPham.GiaSPX, HinhAnhSanPham.HinhAnhSP FROM SanPham INNER JOIN HinhAnhSanPham ON SanPham.MaSP = HinhAnhSanPham.MaSP WHERE SanPham.MaTH='${MaTH}' ORDER BY sanpham.GiaSPX ${SortBy}`, (err, res) => {
     if (err) {
       console.log("error" + err);
       result(null, err);

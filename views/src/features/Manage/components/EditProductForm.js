@@ -1,85 +1,22 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./addProductForm.css";
-import {useForm} from "react-hook-form";
+import moment from "moment";
+import {Form, Input, Select, Button, Row, Col} from "antd";
 import PropTypes from "prop-types";
+
 import productAPI from "../../../api/productAPI";
-import {yupResolver} from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import importIncoiceAPI from "../../../api/importInvoice";
 import imageAPI from "../../../api/imageAPI";
+import {useParams} from "react-router";
 
 EditProductForm.propTypes = {
-  tradeMark: PropTypes.array,
-  size: PropTypes.array,
+  DataSP: PropTypes.object,
 };
 
-const schema = yup.object({
-  khohang: yup.string(),
-  masanpham: yup.string().required("Mã sản phẩm không được trống"),
-  tensanpham: yup.string().required("Tên sản phẩm không được trống"),
-  loaisanpham: yup.string().required("Vui lòng chọn loại sản phẩm"),
-  thuonghieu: yup.string().required("Vui lòng chọn thương hiệu"),
-  size: yup.string().required("Vui lòng chọn kích cỡ"),
-  soluong: yup
-    .number()
-    .typeError("Vui lòng nhập số lượng")
-    .min(1, "Số lượng tối thiểu là 1")
-    .required("Vui lòng nhập số lượng"),
-  gianhap: yup
-    .number()
-    .typeError("Vui lòng nhập giá")
-    .min(0, "Giá phải lớn hơn 0")
-    .required("Vui lòng nhập giá"),
-  giaban: yup
-    .number()
-    .typeError("Vui lòng nhập giá")
-    .min(0, "Giá phải lớn hơn 0 ")
-    .required("Vui lòng nhập giá"),
-});
-
 function EditProductForm(props) {
-  const {
-    register,
-    handleSubmit,
-    formState: {errors},
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  const {Option} = Select;
 
-  const time = new Date();
-  const ddmmyyyy = `${time.getFullYear()}-${
-    time.getMonth() + 1
-  }-${time.getDate()}`;
-
-  const [imageUrl, setImageUrl] = useState("");
-  const [file, setFile] = useState("");
-
-  const uploadImage = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const base64 = await getBase64(file);
-    setImageUrl(base64);
-    setFile(file);
-  };
-
-  const getBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = (err) => {
-        reject(err);
-      };
-    });
-  };
-
-  const btnActive = () => {
-    document.getElementById("default-btn").click();
-  };
+  const [dataSP, setDataSP] = useState([]);
 
   const dataProduct = (data) => {
     return {
@@ -95,7 +32,7 @@ function EditProductForm(props) {
 
   const dataInvoice = (data) => {
     return {
-      NgayLapHDN: ddmmyyyy,
+      NgayLapHDN: moment().format("YYYY-MM-DD"),
       SoLuongNhap: data.soluong,
       GiaSPN: data.gianhap,
       MaKhoHang: data.khohang,
@@ -103,20 +40,12 @@ function EditProductForm(props) {
     };
   };
 
-  const dataImage = (data) => {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("MaSP", data.masanpham);
-    return formData;
-  };
-
   const checkMaSP = async (data) => {
     if (!data) return;
     try {
       const respone = await productAPI.findOne(data);
       if (respone.length === 1) {
-        document.getElementsByClassName("errors")[1].innerText =
-          "Mã sản phẩm đã tồn tại";
+        document.getElementsByClassName("errors")[1].innerText = "Mã sản phẩm đã tồn tại";
       } else {
         document.getElementsByClassName("errors")[1].innerText = "";
       }
@@ -126,181 +55,146 @@ function EditProductForm(props) {
   };
 
   const onSubmit = async (data) => {
-    if (!data) return;
-    try {
-      await productAPI.create(dataProduct(data));
-      await importIncoiceAPI.create(dataInvoice(data));
-      if (file) {
-        await imageAPI.create(dataImage(data));
-      }
-      window.location.reload();
-    } catch (error) {
-      console.log(error);
-    }
+    console.log(data);
+    // window.location.reload();
   };
 
-  const dataTrademark =
-    !!props.tradeMark &&
-    props.tradeMark.map(({MaTH, TenTH}, i) => (
-      <option key={i} value={MaTH}>
-        {TenTH}
-      </option>
-    ));
-
-  const dataSize =
-    !!props.size &&
-    props.size.map(({ID, KichThuocSP}, i) => (
-      <option key={i} value={ID}>
-        {KichThuocSP}
-      </option>
-    ));
+  const dataForm = {
+    GiaSPN: props.DataSP.GiaSPN,
+    GiaSPX: props.DataSP.GiaSPX,
+    KhoHang: "1",
+    KichCo: undefined,
+    MaLSP: props.DataSP.MaLSP,
+    MaSP: props.DataSP.MaSP,
+    MaTH: props.DataSP.MaTH,
+    SLSP: undefined,
+    TenSP: props.DataSP.TenSP,
+    ThongTinSP: props.DataSP.ThongTinSP,
+  };
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="field">
-          <div className="title">
-            <label>Kho Hàng</label>
-          </div>
-          <div className="inputField">
-            <select {...register("khohang")}>
-              <option value="1">Kho hàng Cần Thơ</option>
-            </select>
-            <span className="errors">{errors.khohang?.message}</span>
-          </div>
-        </div>
+      <Form
+        labelCol={{
+          span: 5,
+        }}
+        wrapperCol={{
+          span: 16,
+        }}
+        onFinish={onSubmit}
+        autoComplete="off"
+        initialValues={dataForm}
+      >
+        <Form.Item label="Kho Hàng" name="KhoHang">
+          <Select>
+            <Option value="1">Kho Hàng Cần Thơ</Option>
+          </Select>
+        </Form.Item>
 
-        <div className="field">
-          <div className="title">
-            <label>Mã Sản Phẩm</label>
-          </div>
-          <div className="inputField">
-            <input
-              className="masanpham"
-              {...register("masanpham")}
-              onBlur={(e) => {
-                checkMaSP(e.target.value);
+        <Form.Item label="Mã Sản Phẩm" name="MaSP">
+          <Input
+            onBlur={(e) => {
+              checkMaSP(e.target.value);
+            }}
+          />
+        </Form.Item>
+        <div className="errors"></div>
+
+        <Form.Item label="Tên Sản Phẩm" name="TenSP">
+          <Input />
+        </Form.Item>
+
+        <Row>
+          <Col span={12}>
+            <Form.Item
+              label="Loại Sản Phẩm"
+              name="MaLSP"
+              labelCol={{
+                span: 10,
               }}
-            />
-            <span className="errors">{errors.masanpham?.message}</span>
-          </div>
-        </div>
-
-        <div className="field">
-          <div className="title">
-            <label>Tên Sản Phẩm</label>
-          </div>
-          <div className="inputField">
-            <input className="tensanpham" {...register("tensanpham")} />
-            <span className="errors">{errors.tensanpham?.message}</span>
-          </div>
-        </div>
-
-        <div className="field">
-          <div className="title">
-            <label>Loại Sản Phẩm</label>
-          </div>
-          <div className="inputField">
-            <select className="loaisanpham" {...register("loaisanpham")}>
-              <option value="LSP01">Giày</option>
-            </select>
-            <span className="errors">{errors.loaisanpham?.message}</span>
-          </div>
-        </div>
-
-        <div className="field">
-          <div className="title">
-            <label>Kích cỡ</label>
-          </div>
-          <div className="inputField">
-            <select className="size" {...register("size")}>
-              <option value="">...</option>
-              {dataSize}
-            </select>
-            <span className="errors">{errors.size?.message}</span>
-          </div>
-        </div>
-
-        <div className="field">
-          <div className="title">Thương Hiệu</div>
-          <div className="inputField">
-            <select {...register("thuonghieu")}>
-              <option value="">...</option>
-              {dataTrademark}
-            </select>
-            <span className="errors">{errors.thuonghieu?.message}</span>
-          </div>
-        </div>
-
-        <div className="field">
-          <div className="title">Hình Ảnh</div>
-          <div className="inputField">
-            <input
-              type="file"
-              className="hinhanh"
-              id="default-btn"
-              onChange={(e) => {
-                uploadImage(e);
+              wrapperCol={{
+                span: 12,
               }}
-            />
-            <div className="khunghinhanh" onClick={btnActive}>
-              <div>+</div>
-              {imageUrl ? (
-                <>
-                  <img src={imageUrl} alt="anhsanpham" />
-                </>
-              ) : (
-                <></>
-              )}
-            </div>
-          </div>
-        </div>
+            >
+              <Select>
+                <Option value="LSP01">Giày</Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label="Kích Cỡ"
+              name="KichCo"
+              labelCol={{
+                span: 6,
+              }}
+              wrapperCol={{
+                span: 12,
+              }}
+            >
+              <Select>
+                <Option value="">Kích Cỡ</Option>
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
 
-        <div className="field">
-          <div className="title">Số Lượng</div>
-          <div className="inputField">
-            <input className="soluong" {...register("soluong")} />
-            <span className="errors">{errors.soluong?.message}</span>
-          </div>
-        </div>
+        <Row>
+          <Col span={12}>
+            <Form.Item
+              label="Thương Hiệu"
+              name="MaTH"
+              labelCol={{
+                span: 10,
+              }}
+              wrapperCol={{
+                span: 12,
+              }}
+            >
+              <Select>
+                <Option value="">Thương Hiệu</Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label="Số Lượng"
+              name="SLSP"
+              labelCol={{
+                span: 6,
+              }}
+              wrapperCol={{
+                span: 12,
+              }}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+        </Row>
 
-        <div className="field">
-          <div className="title">Giá Nhập</div>
-          <div className="inputField">
-            <input className="gianhap" {...register("gianhap")} />
-            <span className="errors">{errors.gianhap?.message}</span>
-          </div>
-        </div>
+        <Form.Item label="Giá Nhập" name="GiaSPN">
+          <Input />
+        </Form.Item>
 
-        <div className="field">
-          <div className="title">Giá Bán</div>
-          <div className="inputField">
-            <input className="giaban" {...register("giaban")} />
-            <span className="errors">{errors.giaban?.message}</span>
-          </div>
-        </div>
+        <Form.Item label="Giá Bán" name="GiaSPX">
+          <Input />
+        </Form.Item>
 
-        <div className="field">
-          <div className="title">
-            Thông Tin <br /> Sản Phẩm
-          </div>
-          <div className="inputField">
-            <textarea
-              rows="5"
-              className="thongtinsanpham"
-              {...register("thongtinsanpham")}
-            />
-            {/* <span className="errors">{errors.thongtinsanpham?.message}</span> */}
-          </div>
-        </div>
+        <Form.Item label="Thông Tin SP" name="ThongTinSP">
+          <Input.TextArea />
+        </Form.Item>
 
-        <div className="field">
-          <div></div>
-          <div className="inputField">
-            <button type="submit">THÊM</button>
-          </div>
-        </div>
-      </form>
+        <Form.Item
+          wrapperCol={{
+            offset: 11,
+            span: 16,
+          }}
+        >
+          <Button type="primary" htmlType="submit">
+            Sửa
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 }

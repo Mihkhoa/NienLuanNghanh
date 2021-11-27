@@ -23,7 +23,7 @@ module.exports = {
     TradeMark.find(req.params.MaTH, (err, data) => {
       if (err) {
         res.status(404).send({
-          message: `Not found Customer with id ${req.params.MaTH}.`,
+          message: 'Not found.',
         });
       } else {
         res.status(200).send(data);
@@ -36,7 +36,7 @@ module.exports = {
       if (err)
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving customers.",
+            err.message || "Some error.",
         });
       else res.status(200).send(data);
     });
@@ -47,7 +47,7 @@ module.exports = {
       if (err)
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving product.",
+            err.message || "Some error.",
         });
       else res.status(200).send({
         message: "Success!"

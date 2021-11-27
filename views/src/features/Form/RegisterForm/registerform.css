@@ -1,7 +1,7 @@
 
 .form_register input{
   width: 100%;
-  padding: 0 40px;
+  padding: 0 40px 0 45px;
   
   border: none;
   border-bottom: 2px solid rgba(0, 0, 0, 0.8);
@@ -17,11 +17,20 @@
 
 .form_register .input_error{
   margin: 5px 0 0 40px;
-
   font-size: 13px;
   color: rgb(245, 6, 6);
-
   position: absolute;
+}
+
+.field_form .passwd{
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+}
+
+.field_form .viewpass{
+  display: none;
 }
 
 .form_register .input_error span{

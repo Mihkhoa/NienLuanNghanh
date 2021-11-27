@@ -17,8 +17,12 @@ const productAPI = {
     const url = "/api/products";
     return axiosClient.get(url);
   },
-  sortByProduct(SortBy) {
-    const url = `/api/products/sortbyproduct=${SortBy}`;
+  sortByProduct(Sort) {
+    const url = `/api/products/Sort=${Sort}`;
+    return axiosClient.get(url);
+  },
+  filterMaTH_Sort(Sort, MaTH) {
+    const url = `/api/products/Sort=${Sort}/MaTH=${MaTH}`;
     return axiosClient.get(url);
   },
   getInnerJoinImage(){

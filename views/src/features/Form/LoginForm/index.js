@@ -4,8 +4,7 @@ import * as yup from "yup";
 import {useForm} from "react-hook-form";
 
 import {yupResolver} from "@hookform/resolvers/yup";
-// import {notification} from "antd";
-import {UserOutlined, LockOutlined} from "@ant-design/icons";
+import {UserOutlined, LockOutlined, EyeOutlined, EyeInvisibleOutlined} from "@ant-design/icons";
 
 import {useDispatch, useSelector} from "react-redux";
 import {Redirect} from "react-router-dom";
@@ -26,25 +25,6 @@ function FormLogin() {
     resolver: yupResolver(schema),
   });
 
-  // Notification
-  // const [api, contextHolder] = notification.useNotification();
-
-  // const successNotification = (placement) => {
-  //   api.success({
-  //     top: "105px",
-  //     message: `Đăng nhập thành công!`,
-  //     placement,
-  //   });
-  // };
-
-  // const errorNotification = (placement) => {
-  //   api.error({
-  //     top: "105px",
-  //     message: `Đăng nhập không thành công!`,
-  //     placement,
-  //   });
-  // };
-
   const Role = useSelector((state) => state.user.current.role);
 
   const dispatch = useDispatch();
@@ -60,30 +40,40 @@ function FormLogin() {
   };
 
   if (Role === "ADMIN") {
-    return <Redirect to="/manage" />;
+    return <Redirect to="/manage" />
   }
-  if(Role === "USER") {
-    if(urlproduct){
+
+  if (Role === "USER") {
+    if (urlproduct) {
       localStorage.removeItem("urlproduct");
-      return <Redirect to={urlproduct} />
-    }else{
-      return <Redirect to="/products" />
+      return <Redirect to={urlproduct} />;
+    } else {
+      return <Redirect to="/products" />;
     }
   }
 
+  const viewpass = (key) => {
+    document.getElementById("password").type = "text";
+
+    document.getElementsByClassName("viewpass")[key].style.display = "block";
+    document.getElementsByClassName("hidenpass")[key].style.display = "none";
+  };
+
+  const hidenpass = (key) => {
+    document.getElementById("password").type = "password";
+
+    document.getElementsByClassName("viewpass")[key].style.display = "none";
+    document.getElementsByClassName("hidenpass")[key].style.display = "block";
+  };
+
   return (
     <div>
-      {/* {contextHolder} */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="field_form">
           <div className="icon">
             <UserOutlined style={{fontSize: "35px"}} />
           </div>
-          <input
-            name="username"
-            placeholder="Username"
-            {...register("username")}
-          />
+          <input name="username" placeholder="Username" {...register("username")} />
           <div className="input_error">{errors.username?.message}</div>
         </div>
 
@@ -91,13 +81,14 @@ function FormLogin() {
           <div className="icon">
             <LockOutlined style={{fontSize: "35px"}} />
           </div>
-          <input
-            name="password"
-            placeholder="Password"
-            type="password"
-            {...register("password")}
-          />
+          <input id="password" name="password" placeholder="Password" type="password" {...register("password")} />
           <div className="input_error">{errors.password?.message}</div>
+          <div className="passwd viewpass" onClick={() => hidenpass(0)}>
+            <EyeOutlined style={{fontSize: "20px"}} />
+          </div>
+          <div className="passwd hidenpass" onClick={() => viewpass(0)}>
+            <EyeInvisibleOutlined style={{fontSize: "20px"}} />
+          </div>
         </div>
 
         <div className="btn_login">

@@ -109,10 +109,7 @@ function OrderPage() {
     fetchData(); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (sumorder) {
-    console.log(sumorder);
-    console.log(sumorder[0][0].SUM_ORDER);
-  }
+  console.log(dataOrder)
 
   return (
     <div className="container_orderpage">
@@ -126,18 +123,27 @@ function OrderPage() {
                   return (
                     <div className="item_order" key={i}>
                       <div>
-                        {data[i].TrangThaiHD === 1 ? (
+                        {data[i].TinhTrangHD === 0 ? (
                           <p>
-                            <i>Đã thanh toán</i>
+                            <i>Đang giao hàng</i>
                           </p>
                         ) : (
                           <></>
                         )}
                       </div>
                       <div>
-                        {data[i].TrangThaiHD === 0 ? (
+                        {data[i].TinhTrangHD === 1 ? (
                           <p>
-                            <i>Đang xác nhận</i>
+                            <i>Đã giao hàng</i>
+                          </p>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                      <div>
+                        {data[i].TinhTrangHD === 3 ? (
+                          <p>
+                            <i>Hủy</i>
                           </p>
                         ) : (
                           <></>
@@ -147,14 +153,18 @@ function OrderPage() {
                         {items.map((subItems, index) => {
                           return (
                             <div key={index}>
-                              <p>
-                                {subItems.TenSP} x {subItems.SoLuongXuat}
-                              </p>
+                              <Row>
+                                <Col span={16}>{subItems.TenSP}</Col>
+                                <Col span={2}>x{subItems.SoLuongXuat}</Col>
+                                <Col span={6}>{formatNumber.format(subItems.GiaSPX)}</Col>
+                              </Row>      
                             </div>
                           );
                         })}
                       </div>
-                      <div>{/* <strong>Tổng hóa đơn: </strong> {sumorder[i][i].SUM_ORDER ? formatNumber.format(sumorder[i][i].SUM_ORDER) : <></>} */}</div>
+                      <div>
+                        <strong>Tổng hóa đơn: </strong> {sumorder[i][0].SUM_ORDER ? formatNumber.format(sumorder[i][0].SUM_ORDER) : <></>}
+                      </div>
                     </div>
                   );
                 })}

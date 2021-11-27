@@ -1,9 +1,7 @@
 import "../../manage.css";
 import moment from "moment";
 import React, {useEffect, useState} from "react";
-import {Line} from "@ant-design/charts";
-import {Doughnut} from "react-chartjs-2";
-import {Row, Col} from "antd";
+import {Doughnut, Line} from "react-chartjs-2";
 
 import exportInvoiceAPI from "../../../../api/exportInvoiceAPI";
 import importIncoiceAPI from "../../../../api/importInvoice";
@@ -17,6 +15,10 @@ const MainPage = () => {
 
   const date = (day) => {
     return moment().add(day, "days").format("YYYY-MM-DD");
+  };
+
+  const date_vn = (day) => {
+    return moment().add(day, "days").format("DD-MM-YYYY");
   };
 
   useEffect(() => {
@@ -50,38 +52,7 @@ const MainPage = () => {
     return number;
   };
 
-  let chart;
-
-  const data = [
-    {date: date(-6), slsp: setdata(-6)},
-    {date: date(-5), slsp: setdata(-5)},
-    {date: date(-4), slsp: setdata(-4)},
-    {date: date(-3), slsp: setdata(-3)},
-    {date: date(-2), slsp: setdata(-2)},
-    {date: date(-1), slsp: setdata(-1)},
-    {date: date(0), slsp: setdata(0)},
-    {date: date(1), slsp: setdata(1)},
-  ];
-
-  const config = {
-    data,
-    width: 1200,
-    height: 400,
-    autoFit: false,
-    xField: "date",
-    yField: "slsp",
-    point: {
-      size: 5,
-      shape: "diamond",
-    },
-    label: {
-      style: {
-        fill: "#aaa",
-      },
-    },
-  };
-
-  const datas = {
+  const data_chart_doughnut = {
     labels: ["Vốn", "Doanh Thu", "Lợi Nhuận"],
     datasets: [
       {
@@ -93,24 +64,40 @@ const MainPage = () => {
     ],
   };
 
+  const labels = [date_vn(-6), date_vn(-5), date_vn(-4), date_vn(-3), date_vn(-2), date_vn(-1), date_vn(0), date_vn(1)];
+  const data_chart_line = [setdata(-6), setdata(-5), setdata(-4), setdata(-3), setdata(-2), setdata(-1), setdata(0), setdata(1)];
+
+  const data_chart = {
+    labels: labels,
+    datasets: [
+      {
+        label: "SỐ LƯỢNG HÓA ĐƠN",
+        data: data_chart_line,
+        fill: false,
+        borderColor: "#20b846",
+        tension: 0.1,
+      },
+    ],
+  };
+
   return (
     <div className="container">
-      <div className="chart_line">
-        <Line {...config} onReady={(chartInstance) => (chart = chartInstance)} />
-      </div>
       <div className="container_chart">
         <div className="doughnut_chart">
-          <Doughnut data={datas} width={500} height={500} />
+          <Doughnut data={data_chart_doughnut} width={500} height={500} />
         </div>
         <div className="top_product">
           {topProduct?.map(({TenSP, TopProduct}, i) => (
             <div className="item_product" key={i}>
-              <div>TOP {i+1}</div>
+              <div>TOP {i + 1}</div>
               <div>{TenSP}</div>
               <div>{TopProduct}</div>
             </div>
           ))}
         </div>
+      </div>
+      <div className="chart_line">
+        <Line data={data_chart} width={1200} height={400} />
       </div>
     </div>
   );

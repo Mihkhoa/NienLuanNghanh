@@ -11,7 +11,9 @@ module.exports = (app) => {
 
   app.get("/api/products", product.findAll);
 
-  app.get("/api/products/sortbyproduct=:SortBy", product.sortByProduct);
+  app.get("/api/products/Sort=:Sort", product.filterSort);
+
+  app.get("/api/products/Sort=:Sort/MaTH=:MaTH", product.filter_MaTH_Sort);
 
   app.get("/api/product/MaSP=:MaSP", product.findOne);
 

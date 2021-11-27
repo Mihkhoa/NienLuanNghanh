@@ -5,7 +5,7 @@ import {useHistory} from "react-router-dom";
 import * as yup from "yup";
 import {useForm} from "react-hook-form";
 
-import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import {LockOutlined, UserOutlined, EyeInvisibleOutlined, EyeOutlined} from "@ant-design/icons";
 import {yupResolver} from "@hookform/resolvers/yup";
 import userAPI from "../../../api/userAPI";
 import {notification} from "antd";
@@ -28,19 +28,17 @@ function RegisterForm() {
   // Notification
   const [api, contextHolder] = notification.useNotification();
 
-  const successNotification = (placement) => {
+  const successNotification = () => {
     api.success({
       top: "105px",
       message: `Đăng ký thành công!`,
-      placement,
     });
   };
 
-  const errorNotification = (placement) => {
+  const errorNotification = () => {
     api.error({
       top: "105px",
       message: `Tên tài khoản đã tồn tại!`,
-      placement,
     });
   };
 
@@ -59,6 +57,27 @@ function RegisterForm() {
     }
   };
 
+  const viewpass = (key) => {
+    if(key === 0){
+      document.getElementById("password").type = "text";
+    }else{
+      document.getElementById("confirmpassword").type = "text";
+    }
+    document.getElementsByClassName("viewpass")[key].style.display = "block";
+    document.getElementsByClassName("hidenpass")[key].style.display = "none";
+  }
+
+  const hidenpass = (key) => {
+    if(key === 0){
+      document.getElementById("password").type = "password";
+    }else{
+      document.getElementById("confirmpassword").type = "password";
+    }
+    document.getElementsByClassName("viewpass")[key].style.display = "none";
+    document.getElementsByClassName("hidenpass")[key].style.display = "block";
+  }
+
+
   return (
     <div>
       {contextHolder}
@@ -75,16 +94,20 @@ function RegisterForm() {
           <div className="icon">
             <LockOutlined style={{fontSize: "35px"}} />
           </div>
-          <input name="password" placeholder="Password" type="password" {...register("password")} />
+          <input id="password" name="password" placeholder="Password" type="password" {...register("password")} />
           <div className="input_error">{errors.password?.message}</div>
+          <div className="passwd viewpass" onClick={() => hidenpass(0)}><EyeOutlined style={{fontSize: "20px"}} /></div>
+          <div className="passwd hidenpass" onClick={() => viewpass(0)}><EyeInvisibleOutlined style={{fontSize: "20px"}} /></div>
         </div>
 
         <div className="field_form">
           <div className="icon">
             <LockOutlined style={{fontSize: "35px"}} />
           </div>
-          <input name="confirmpassword" placeholder="Confirm password" type="password" {...register("confirmpassword")} />
+          <input id="confirmpassword" name="confirmpassword" placeholder="Confirm password" type="password" {...register("confirmpassword")} />
           <div className="input_error">{errors.confirmpassword?.message}</div>
+          <div className="passwd viewpass" onClick={() => hidenpass(1)}><EyeOutlined style={{fontSize: "20px"}} /></div>
+          <div className="passwd hidenpass"  onClick={() => viewpass(1)}><EyeInvisibleOutlined style={{fontSize: "20px"}} /></div>
         </div>
 
         <div className="btn_register">

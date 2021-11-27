@@ -64,4 +64,20 @@ Customer.delete = (MaKH, result) => {
   });
 };
 
+Customer.putUpdateKH = (dataCustomer, result) => {
+  sql.query(
+    "UPDATE KhachHang SET TenKH=?, SDT=?, Email=?, DiaChi=? WHERE Username=?",
+    [dataCustomer.TenKH, dataCustomer.SDT, dataCustomer.Email, dataCustomer.DiaChi, dataCustomer.Username],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+      console.log("Success!");
+      result(null);
+    },
+  );
+};
+
 module.exports = Customer;

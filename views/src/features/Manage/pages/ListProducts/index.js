@@ -2,7 +2,7 @@ import "../../manage.css";
 import "./listProducts.css";
 import moment from "moment";
 import React, {useEffect, useState} from "react";
-import {useHistory} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
 import {Modal, Table, Space, Button, Row, Col} from "antd";
 import {FormOutlined, DeleteOutlined, ExclamationCircleOutlined, ProfileOutlined} from "@ant-design/icons";
 
@@ -15,29 +15,7 @@ import productType from "../../../../api/productTypeAPI";
 import tradeMarkAPI from "../../../../api/tradeMarkAPI";
 import imageAPI from "../../../../api/imageAPI";
 import SizeAPI from "../../../../api/sizeAPI";
-
-// const schema = yup.object({
-//   khohang: yup.string(),
-//   tensanpham: yup.string().required("Tên sản phẩm không được trống"),
-//   loaisanpham: yup.string().required("Vui lòng chọn loại sản phẩm"),
-//   thuonghieu: yup.string().required("Vui lòng chọn thương hiệu"),
-//   size: yup.string().required("Vui lòng chọn kích cỡ"),
-//   soluong: yup
-//     .number()
-//     .typeError("Vui lòng nhập số lượng")
-//     .min(1, "Số lượng tối thiểu là 1")
-//     .required("Vui lòng nhập số lượng"),
-//   gianhap: yup
-//     .number()
-//     .typeError("Vui lòng nhập giá")
-//     .min(0, "giá phải là số dương")
-//     .required("Vui lòng nhập giá"),
-//   giaban: yup
-//     .number()
-//     .typeError("Vui lòng nhập giá")
-//     .min(0, "giá phải là số dương")
-//     .required("Vui lòng nhập giá"),
-// });
+import EditProductForm from "../../components/EditProductForm";
 
 const ListProducts = () => {
   const {confirm} = Modal;
@@ -53,24 +31,7 @@ const ListProducts = () => {
   const [thuonghieu, setThuonghieu] = useState([]);
   const [size, setSize] = useState([]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: {errors},
-    reset,
-  } = useForm({
-    // defaultValues: {
-    //   tensanpham: "",
-    //   loaisanpham: "",
-    //   size: "",
-    //   thuonghieu: "",
-    //   soluong: "",
-    //   giaban: "",
-    //   gianhap: "",
-    //   thongtinsanpham: "",
-    // },
-    // resolver: yupResolver(schema),
-  });
+  console.log(name)
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -109,13 +70,12 @@ const ListProducts = () => {
 
   const editModalProduct = (key) => {
     setEditModal(true);
-
     setEditProduct(dataProduct[key]);
     getName(dataProduct[key].MaLSP, dataProduct[key].MaTH);
   };
 
   const cancelModal = () => {
-    console.log("CANCEL");
+    window.location.reload();
     setEditModal(false);
   };
 
@@ -258,118 +218,8 @@ const ListProducts = () => {
             <Button type="primary" onClick={() => editModalProduct(record.key)}>
               <FormOutlined />
             </Button>
-            <Modal title={editProduct.TenSP} style={{top: 120}} visible={editModal} onOk={() => onSubmit()} onCancel={() => cancelModal()} footer={null} width={1000}>
-              <div>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <div className="field">
-                    <div className="title">
-                      <label>Kho Hàng</label>
-                    </div>
-                    <div className="inputField">
-                      <select {...register("khohang")}>
-                        <option value="1">Kho hàng Cần Thơ</option>
-                      </select>
-                      <span className="errors">{errors.khohang?.message}</span>
-                    </div>
-                  </div>
-
-                  <div className="field">
-                    <div className="title">
-                      <label>Tên Sản Phẩm</label>
-                    </div>
-                    <div className="inputField">
-                      <input className="tensanpham" defaultValue={editProduct.TenSP} {...register("tensanpham")} />
-                      <span className="errors">{errors.tensanpham?.message}</span>
-                    </div>
-                  </div>
-
-                  <div className="field">
-                    <div className="title">
-                      <label>Loại Sản Phẩm</label>
-                    </div>
-                    <div className="inputField">
-                      <select className="loaisanpham" {...register("loaisanpham")}>
-                        <option value="LSP01">Giày</option>
-                      </select>
-                      <span className="errors">{errors.loaisanpham?.message}</span>
-                    </div>
-                  </div>
-
-                  <div className="field">
-                    <div className="title">
-                      <label>Kích cỡ</label>
-                    </div>
-                    <div className="inputField">
-                      <select className="size" {...register("size")}>
-                        <option value="">...</option>
-                        {!!size &&
-                          size.map(({ID, KichThuocSP}, i) => (
-                            <option key={i} value={ID}>
-                              {KichThuocSP}
-                            </option>
-                          ))}
-                      </select>
-                      <span className="errors">{errors.size?.message}</span>
-                    </div>
-                  </div>
-
-                  <div className="field">
-                    <div className="title">Thương Hiệu</div>
-                    <div className="inputField">
-                      <select {...register("thuonghieu")}>
-                        <option value="test">...</option>
-                        {!!thuonghieu &&
-                          thuonghieu.map(({MaTH, TenTH}, i) => (
-                            <option key={i} value={MaTH}>
-                              {TenTH}
-                            </option>
-                          ))}
-                      </select>
-                      <span className="errors">{errors.thuonghieu?.message}</span>
-                    </div>
-                  </div>
-
-                  <div className="field">
-                    <div className="title">Số Lượng</div>
-                    <div className="inputField">
-                      <input className="soluong" {...register("soluong")} />
-                      <span className="errors">{errors.soluong?.message}</span>
-                    </div>
-                  </div>
-
-                  <div className="field">
-                    <div className="title">Giá Nhập</div>
-                    <div className="inputField">
-                      <input className="gianhap" {...register("gianhap")} />
-                      <span className="errors">{errors.gianhap?.message}</span>
-                    </div>
-                  </div>
-
-                  <div className="field">
-                    <div className="title">Giá Bán</div>
-                    <div className="inputField">
-                      <input className="giaban" {...register("giaban")} />
-                      <span className="errors">{errors.giaban?.message}</span>
-                    </div>
-                  </div>
-
-                  <div className="field">
-                    <div className="title">
-                      Thông Tin <br /> Sản Phẩm
-                    </div>
-                    <div className="inputField">
-                      <textarea rows="5" className="thongtinsanpham" {...register("thongtinsanpham")} />
-                    </div>
-                  </div>
-
-                  <div className="field">
-                    <div></div>
-                    <div className="inputField">
-                      <button type="submit">SỬA</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
+            <Modal title={editProduct.TenSP} style={{top: 50}} visible={editModal} onOk={() => onSubmit()} onCancel={() => cancelModal()} footer={null} width={650}>
+              <EditProductForm DataSP={editProduct} />
             </Modal>
 
             <Button

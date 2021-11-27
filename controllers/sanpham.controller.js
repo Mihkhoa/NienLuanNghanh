@@ -44,11 +44,24 @@ module.exports = {
     });
   },
 
-  sortByProduct: (req, res) => {
-    Product.sortBy(req.params.SortBy, (err, data) => {
+  filterSort: (req, res) => {
+    console.log(req.params.Sort)
+    Product.getFilter_Sort(req.params.Sort, (err, data) => {
       if (err) {
         res.status(500).send({
-          message: `Not found Customer with id ${req.params.SortBy}.`,
+          message: "Not found.",
+        });
+      } else {
+        res.status(200).send(data);
+      }
+    });
+  },
+
+  filter_MaTH_Sort: (req, res) => {
+    Product.getFilter_MaTH_Sort(req.params.Sort, req.params.MaTH, (err, data) => {
+      if (err) {
+        res.status(500).send({
+          message: "Not found.",
         });
       } else {
         res.status(200).send(data);
@@ -60,7 +73,7 @@ module.exports = {
     Product.findProduct(req.params.TenSP, (err, data) => {
       if (err) {
         res.status(500).send({
-          message: `Not found Customer with id ${req.params.TenSP}.`,
+          message: "Not found.",
         });
       } else {
         res.status(200).send(data);
@@ -101,7 +114,7 @@ module.exports = {
       if (err)
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving product.",
+            err.message || "Some error.",
         });
       else
         res.status(200).send({

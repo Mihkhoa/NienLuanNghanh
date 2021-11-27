@@ -12,7 +12,11 @@ const KhachHangAPI = {
   findKhacHang(MaKH){
     const url = `/api/customer/MaKH=${MaKH}`;
     return axiosClient.get(url);
-  }
+  },
+  updateKhacHang(data){
+    const url = "/api/customer/updateKhachHang";
+    return axiosClient.put(url, data);
+  },
 }
 
 export default KhachHangAPI;
