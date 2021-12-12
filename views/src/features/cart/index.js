@@ -1,15 +1,17 @@
 import "./style_cartpage.css";
 import React, {useEffect, useState} from "react";
-import {NavLink} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {Table, Row, Col} from "antd";
 import {DeleteFilled} from "@ant-design/icons";
 
 import cartAPI from "../../api/cartAPI";
+import KhachHangAPI from "../../api/khachhangAPI";
 
 function CartPage() {
   const [cartData, setCartData] = useState([]);
   const [sumGiaSPX, setSumGiaSPX] = useState("");
+  const [dataKhachHang, setDataKhachHang] = useState([]);
 
   const Username = useSelector((state) => state.user.current.username);
 
@@ -20,6 +22,8 @@ function CartPage() {
         setCartData(data_Product);
         const data_sumMaSPX = await cartAPI.sumOrder(Username);
         setSumGiaSPX(data_sumMaSPX[0].sumOrder);
+        const dataKH = await KhachHangAPI.findAll(Username);
+        setDataKhachHang(dataKH);
       } catch (error) {
         console.log(error);
       }
@@ -34,8 +38,16 @@ function CartPage() {
 
   const delProduct = async (MaGH) => {
     await cartAPI.DeleteOne(MaGH);
-    console.log(MaGH);
     window.location.reload();
+  }
+
+  const history = useHistory();
+  const checkProfile = () => {
+    if(!dataKhachHang){
+      history.push("/profile");
+    }else{
+      history.push("/payment");
+    }
   }
 
   const columns = [
@@ -132,7 +144,7 @@ function CartPage() {
               </Row>
             </div>
             <div>
-              <NavLink to="/payment"><button className="btn_thanhtoan">TIẾN HÀNH THANH TOÁN</button></NavLink>
+              <button className="btn_thanhtoan" onClick={checkProfile}>TIẾN HÀNH THANH TOÁN</button>
             </div>
           </div>
         </>

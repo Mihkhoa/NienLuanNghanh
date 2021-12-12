@@ -96,7 +96,7 @@ function InfoProduct() {
             >
               THÊM VÀO GIỎ HÀNG
             </button>
-            <button className="btn btn_buy">MUA NGAY</button>
+            {/* <button className="btn btn_buy">MUA NGAY</button> */}
           </div>
           <div className="box_promotion">
             <span>KHUYỄN MÃI KHI MUA HÀNG</span>
@@ -109,7 +109,9 @@ function InfoProduct() {
             </span>{" "}
             <br />
             <span>- Double Box kèm chống sốc khi giao hàng</span> <br />
-            <span>- Giao hàng nhanh 60 phút trong nội thành Hà Nội</span> <br />
+            <span>- Giao hàng nhanh 60 phút trong nội thành Cần Thơ</span> <br />
+            <span>- Tặng voucher 200k vệ sinh giày với đơn hàng trên 2 triệu</span> <br />
+            <span>- 1 đổi 1 trong 7 ngày nếu có lỗi từ nhà sản xuất</span> <br />
           </div>
         </div>
       </div>

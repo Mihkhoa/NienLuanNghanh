@@ -38,7 +38,7 @@ const MenuPage = () => {
           <SubMenu key="sub3" icon={<HomeOutlined />} title="KHO HÀNG">
             <Menu.Item key="6">Thêm kho hàng</Menu.Item>
           </SubMenu>
-          <SubMenu key="sub4" icon={<CarOutlined />} title="KHO HÀNG">
+          <SubMenu key="sub4" icon={<CarOutlined />} title="VẬN CHUYỂN">
             <Menu.Item key="7">Comming Soon</Menu.Item>
           </SubMenu>
         </Menu>

@@ -121,11 +121,11 @@ function Header() {
           {isAuth === "USER" ? (
             <>
               <div className="header_user">
-                <div>
+                {/* <div>
                   <Badge status="error" count={2} overflowCount={10}>
                     <BellOutlined style={{fontSize: "28px", color: "#fff"}} />
                   </Badge>
-                </div>
+                </div> */}
                 <div>
                   <NavLink to="/cart">
                     <Badge status="error" count={number} overflowCount={10}>

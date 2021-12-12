@@ -16,5 +16,7 @@ module.exports = (app) => {
   app.get("/api/importInvoice/MaSP=:MaSP", importInvoice.findOneProduct);
 
   app.delete("/api/importInvoice/MaSP=:MaSP", importInvoice.delete);
+
+  app.put("/api/importInvoice/update", importInvoice.updateHDN);
  
 };

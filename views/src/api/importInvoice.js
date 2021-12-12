@@ -13,6 +13,10 @@ const importIncoiceAPI = {
     const url = "/api/importInvoice/sumGiaSPN";
     return axiosClient.get(url);
   },
+  update(data){
+    const url = "/api/importInvoice/update";
+    return axiosClient.put(url, data);
+  }
 };
 
 export default importIncoiceAPI;

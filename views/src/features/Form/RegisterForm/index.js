@@ -9,9 +9,10 @@ import {LockOutlined, UserOutlined, EyeInvisibleOutlined, EyeOutlined} from "@an
 import {yupResolver} from "@hookform/resolvers/yup";
 import userAPI from "../../../api/userAPI";
 import {notification} from "antd";
+import md5 from "md5";
 
 let schema = yup.object().shape({
-  username: yup.string().min(5, "Tên tài khoản phải lớn hơn 5 ký tự").required("Vui lòng nhập tên tài khoản"),
+  username: yup.string().min(10, "Số điện thoại phải là 10 số").required("Vui lòng nhập số điện thoại"),
   password: yup.string().min(5, "Mật khẩu phải lớn hơn 5 ký tự").required("Vui lòng nhập mật khẩu"),
   confirmpassword: yup.string().oneOf([yup.ref("password"), null], "Mật khẩu không trùng khớp"),
 });
@@ -44,10 +45,17 @@ function RegisterForm() {
 
   const history = useHistory();
 
+  const dataUser = (data) => {
+    return {
+      username: data.username,
+      password: md5(data.password)
+    }
+  }
+
   const onSubmit = async (data) => {
-    const findUser = await userAPI.findUser(data);
+    const findUser = await userAPI.findUser(dataUser(data));
     if (!findUser) {
-      await userAPI.register(data);
+      await userAPI.register(dataUser(data));
       successNotification();
       setTimeout(() => {
         history.push("/login");
@@ -86,7 +94,7 @@ function RegisterForm() {
           <div className="icon">
             <UserOutlined style={{fontSize: "35px"}} />
           </div>
-          <input name="username" placeholder="Username" {...register("username")} />
+          <input name="username" placeholder="Nhập số điện thoại" {...register("username")} />
           <div className="input_error">{errors.username?.message}</div>
         </div>
 
@@ -94,7 +102,7 @@ function RegisterForm() {
           <div className="icon">
             <LockOutlined style={{fontSize: "35px"}} />
           </div>
-          <input id="password" name="password" placeholder="Password" type="password" {...register("password")} />
+          <input id="password" name="password" placeholder="Nhập mật khẩu" type="password" {...register("password")} />
           <div className="input_error">{errors.password?.message}</div>
           <div className="passwd viewpass" onClick={() => hidenpass(0)}><EyeOutlined style={{fontSize: "20px"}} /></div>
           <div className="passwd hidenpass" onClick={() => viewpass(0)}><EyeInvisibleOutlined style={{fontSize: "20px"}} /></div>
@@ -104,7 +112,7 @@ function RegisterForm() {
           <div className="icon">
             <LockOutlined style={{fontSize: "35px"}} />
           </div>
-          <input id="confirmpassword" name="confirmpassword" placeholder="Confirm password" type="password" {...register("confirmpassword")} />
+          <input id="confirmpassword" name="confirmpassword" placeholder="Nhập lại mật khẩu" type="password" {...register("confirmpassword")} />
           <div className="input_error">{errors.confirmpassword?.message}</div>
           <div className="passwd viewpass" onClick={() => hidenpass(1)}><EyeOutlined style={{fontSize: "20px"}} /></div>
           <div className="passwd hidenpass"  onClick={() => viewpass(1)}><EyeInvisibleOutlined style={{fontSize: "20px"}} /></div>

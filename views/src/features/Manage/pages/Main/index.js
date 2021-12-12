@@ -23,7 +23,6 @@ const MainPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let i = 0;
       try {
         const getAllHoaDonXuat = await exportInvoiceAPI.findDataChart(date(-6), date(0));
         setDataHDX(getAllHoaDonXuat);
@@ -32,7 +31,6 @@ const MainPage = () => {
         const getSumGiaSPX = await exportInvoiceAPI.sumGiaSPX();
         setSumGiaSPX(getSumGiaSPX[0]);
         const getMaSP = await chitiethoadonxuatAPI.groupByMaSP();
-        console.log(getMaSP);
         setTopProduct(getMaSP);
       } catch (error) {
         console.log(error);

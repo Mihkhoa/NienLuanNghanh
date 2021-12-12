@@ -68,4 +68,20 @@ ImportInvoice.delete = (MaHDN, result) => {
   });
 };
 
+ImportInvoice.putUpdateHDN = (dataHDN, result) => {
+  sql.query(
+    "UPDATE HoaDonNhap SET SoLuongNhap=?, GiaSPN=?, MaKhoHang=? WHERE MaSP=?",
+    [dataHDN.SoLuongNhap, dataHDN.GiaSPN, dataHDN.MaKhoHang, dataHDN.MaSP],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+      console.log("Success!");
+      result(null);
+    },
+  );
+};
+
 module.exports = ImportInvoice;

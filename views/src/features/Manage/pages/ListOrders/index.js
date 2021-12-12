@@ -2,12 +2,10 @@ import "./style_listorders.css";
 import React, {useEffect, useState} from "react";
 import moment from "moment";
 import {Button, Table, Modal, Row, Col} from "antd";
-import {useSelector} from "react-redux";
 
 import exportInvoiceAPI from "../../../../api/exportInvoiceAPI";
 import khachhangAPI from "../../../../api/khachhangAPI";
 import ChiTietHoaDonXuatAPI from "../../../../api/chitiethoadonxuatAPI";
-import productAPI from "../../../../api/productAPI";
 
 function ListOrders() {
   const [dataHDX, setDataHDX] = useState([]);
@@ -67,10 +65,6 @@ function ListOrders() {
 
   const cancelModal = () => {
     setIsModalVisible(false);
-  };
-
-  const date = (day) => {
-    return moment().add(day, "days").format("YYYY-MM-DD");
   };
 
   const dataOrder = dataHDX?.map(({MaHDX, NgayLapHDX, TrangThaiHD, MaKH, TinhTrangHD}, i) => ({

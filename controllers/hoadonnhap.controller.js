@@ -69,4 +69,26 @@ module.exports = {
         });
     });
   },
+
+  updateHDN: (req, res) => {
+    if (!req.body) {
+      res.status(400).send({
+        message: "Content can not be empty!",
+      });
+    }
+    ImportInvoice.putUpdateHDN(new ImportInvoice(req.body), (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: 'Not found.',
+          });
+        } else {
+          res.status(500).send({
+            message: "Error updating",
+          });
+        }
+      } else res.send(data);
+    });
+  },
+
 };

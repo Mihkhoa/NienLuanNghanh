@@ -1,15 +1,16 @@
-import "./loginform.css";
+import { EyeInvisibleOutlined, EyeOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { unwrapResult } from "@reduxjs/toolkit";
+import md5 from "md5";
 import React from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 import * as yup from "yup";
-import {useForm} from "react-hook-form";
+import { login } from "../../../store/userSlide";
+import "./loginform.css";
 
-import {yupResolver} from "@hookform/resolvers/yup";
-import {UserOutlined, LockOutlined, EyeOutlined, EyeInvisibleOutlined} from "@ant-design/icons";
 
-import {useDispatch, useSelector} from "react-redux";
-import {Redirect} from "react-router-dom";
-import {unwrapResult} from "@reduxjs/toolkit";
-import {login} from "../../../store/userSlide";
 
 const schema = yup.object().shape({
   username: yup.string().required("Vui lòng nhập tên tài khoản"),
@@ -31,9 +32,16 @@ function FormLogin() {
 
   const urlproduct = localStorage.getItem("urlproduct");
 
+  const dataUser = (data) => {
+    return {
+      username: data.username,
+      password: md5(data.password)
+    }
+  }
+
   const onSubmit = async (data) => {
     try {
-      unwrapResult(dispatch(await login(data)));
+      unwrapResult(dispatch(await login(dataUser(data))));
     } catch (err) {
       console.log(err);
     }
@@ -73,7 +81,7 @@ function FormLogin() {
           <div className="icon">
             <UserOutlined style={{fontSize: "35px"}} />
           </div>
-          <input name="username" placeholder="Username" {...register("username")} />
+          <input name="username" placeholder="Nhập số điện thoại" {...register("username")} />
           <div className="input_error">{errors.username?.message}</div>
         </div>
 
@@ -81,7 +89,7 @@ function FormLogin() {
           <div className="icon">
             <LockOutlined style={{fontSize: "35px"}} />
           </div>
-          <input id="password" name="password" placeholder="Password" type="password" {...register("password")} />
+          <input id="password" name="password" placeholder="Nhập mật khẩu" type="password" {...register("password")} />
           <div className="input_error">{errors.password?.message}</div>
           <div className="passwd viewpass" onClick={() => hidenpass(0)}>
             <EyeOutlined style={{fontSize: "20px"}} />

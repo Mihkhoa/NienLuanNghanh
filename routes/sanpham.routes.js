@@ -26,5 +26,7 @@ module.exports = (app) => {
   app.get("/api/innerjoin/iminvoice", product.innerJoinImInvoice);
 
   app.get("/api/innerjoin/iminvoice=:MaSP", product.fineOneInnerJoinImInvoice);
+
+  app.put("/api/product/update", product.updateProduct);
  
 };

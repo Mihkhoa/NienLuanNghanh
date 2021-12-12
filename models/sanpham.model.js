@@ -150,4 +150,20 @@ Product.remove = (MaSP, result) => {
   });
 };
 
+Product.putUpdateProduct = (dataProduct, result) => {
+  sql.query(
+    "UPDATE SanPham SET TenSP=?, GiaSPX=?, ThongTinSP=?, MaTH=?, MaLSP=?, MaKT=? WHERE MaSP=?",
+    [dataProduct.TenSP, dataProduct.GiaSPX, dataProduct.ThongTinSP, dataProduct.MaTH, dataProduct.MaLSP, dataProduct.MaKT, dataProduct.MaSP],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+      console.log("Success!");
+      result(null);
+    },
+  );
+};
+
 module.exports = Product;

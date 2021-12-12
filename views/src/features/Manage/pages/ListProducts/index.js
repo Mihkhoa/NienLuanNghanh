@@ -2,19 +2,14 @@ import "../../manage.css";
 import "./listProducts.css";
 import moment from "moment";
 import React, {useEffect, useState} from "react";
-import {NavLink, useHistory} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {Modal, Table, Space, Button, Row, Col} from "antd";
 import {FormOutlined, DeleteOutlined, ExclamationCircleOutlined, ProfileOutlined} from "@ant-design/icons";
-
-import {useForm} from "react-hook-form";
-import {yupResolver} from "@hookform/resolvers/yup";
-import * as yup from "yup";
 
 import productAPI from "../../../../api/productAPI";
 import productType from "../../../../api/productTypeAPI";
 import tradeMarkAPI from "../../../../api/tradeMarkAPI";
 import imageAPI from "../../../../api/imageAPI";
-import SizeAPI from "../../../../api/sizeAPI";
 import EditProductForm from "../../components/EditProductForm";
 
 const ListProducts = () => {
@@ -28,20 +23,12 @@ const ListProducts = () => {
   const [nameTH, setNameTH] = useState([]);
   const [name, setName] = useState([]);
   const [urlImage, setUrlImage] = useState("");
-  const [thuonghieu, setThuonghieu] = useState([]);
-  const [size, setSize] = useState([]);
-
-  console.log(name)
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const data1 = await productAPI.getInnerJoinTrademark();
         setDataProduct(data1);
-        const data2 = await tradeMarkAPI.getAll();
-        setThuonghieu(data2);
-        const data3 = await SizeAPI.getAll();
-        setSize(data3);
       } catch (error) {
         console.log(error);
       }
@@ -79,11 +66,11 @@ const ListProducts = () => {
     setEditModal(false);
   };
 
-  const showConfirm = (MaSP) => {
+  const showConfirm = (MaSP, TenSP) => {
     confirm({
       title: "XÓA SẢN PHẨM",
       icon: <ExclamationCircleOutlined />,
-      content: "Dữ liệu bị xóa sẽ không thể phục hồi",
+      content: `Sản phẩm ${TenSP} sẽ bị xóa và không thể phục hồi!`,
       onOk() {
         deleteProduct(MaSP);
       },
@@ -215,17 +202,17 @@ const ListProducts = () => {
               </Row>
             </Modal>
 
-            <Button type="primary" onClick={() => editModalProduct(record.key)}>
+            <Button type="primary" onClick={() => editModalProduct(record.key, record.masanpham, record.size)}>
               <FormOutlined />
             </Button>
-            <Modal title={editProduct.TenSP} style={{top: 50}} visible={editModal} onOk={() => onSubmit()} onCancel={() => cancelModal()} footer={null} width={650}>
+            <Modal title="SỬA SẢN PHẨM" style={{top: 50}} visible={editModal} onOk={() => onSubmit()} onCancel={() => cancelModal()} footer={null} width={650}>
               <EditProductForm DataSP={editProduct} />
             </Modal>
 
             <Button
               type="primary"
               onClick={() => {
-                showConfirm(record.masanpham);
+                showConfirm(record.masanpham, record.tensanpham);
               }}
               danger
             >

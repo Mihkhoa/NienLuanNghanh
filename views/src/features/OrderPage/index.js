@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {Row, Col} from "antd";
 import {useHistory} from "react-router-dom";
+import moment from "moment";
 
 import vnPayAPI from "../../api/vnpayAPI";
 import cartAPI from "../../api/cartAPI";
@@ -32,19 +33,17 @@ function OrderPage() {
       }
     : {};
 
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const dd = today.getDate() < 9 ? "0" + today.getDate() : today.getDate();
-  const mm = today.getMonth() + 1 < 9 ? "0" + (today.getMonth() + 1) : today.getMonth() + 1;
-
   const Username = useSelector((state) => state.user.current.username);
   const history = useHistory();
 
-  const dataHoaDonXuat = (data) => {
+  const date = moment().format("YYYY-MM-DD");
+
+  const dataHoaDonXuat = () => {
     return {
-      NgayLapHDX: yyyy + "" + mm + "" + dd,
+      NgayLapHDX: date,
       TrangThaiHD: 1, // Da thanh toan: 1, Chua thanh toan: -1, Dang xac nhan: 0
-      MaKH: "1",
+      TinhTrangHD: 0,
+      MaKH: dataKhachHang.MaKH,
       MaKhoHang: "1",
     };
   };
@@ -69,25 +68,28 @@ function OrderPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // if (urlPay) {
-        //   const data = await vnPayAPI.getData(urlPay);
-        //   if (data.code === "00") {
-        const dataProductCart = await cartAPI.findAll(Username);
-        //     await exportInvoiceAPI.create(dataHoaDonXuat(dataProductCart));
-        //     const MaHDX = await exportInvoiceAPI.findMaHDX();
-        //     for(i; i < dataProductCart.length; i++){
-        //       await ChiTietHoaDonXuatAPI.create(dataChiTietHDX(dataProductCart[i], MaHDX[0].MaHDX))
-        //     }
-        //     setTimeout(() => {}, 1000);
-        //     history.push("/order");
-        //     await cartAPI.DeleteAll(Username);
-        //   }
-        // } else return;
         const dataKhachHang = await KhachHangAPI.findAll(Username);
         setDataKhachHang(dataKhachHang[0]);
         const data2 = await exportInvoiceAPI.findMaKH(dataKhachHang[0].MaKH);
         setData(data2);
+
         let i = 0;
+        if (urlPay.vnp_TransactionStatus === "00") {
+          const data = await vnPayAPI.getData(urlPay);
+          if (data.code === '00') {
+            const dataProductCart = await cartAPI.findAll(Username);
+            await exportInvoiceAPI.create(dataHoaDonXuat());
+            const MaHDX = await exportInvoiceAPI.findMaHDX();
+            for (i; i < dataProductCart.length; i++) {
+              await ChiTietHoaDonXuatAPI.create(dataChiTietHDX(dataProductCart[i], MaHDX[0].MaHDX));
+            }
+            setTimeout(() => {}, 1000);
+            history.push("/order");
+            await cartAPI.DeleteAll(Username);
+            window.location.reload();
+          }
+        }
+        
         for (i; i < data2.length; i++) {
           const data4 = await ChiTietHoaDonXuatAPI.sumOrder(data2[i].MaHDX);
           if (data4) {
@@ -98,18 +100,13 @@ function OrderPage() {
             setDataOrder((dataOrder) => [...dataOrder, data3]);
           }
         }
-        // const MaHDX = await exportInvoiceAPI.findMaHDX();
-        // console.log(MaHDX);
-        // const data = await ChiTietHoaDonXuatAPI.findMHD(MaHDX[0].MaHDX);
-        // console.log(data);
+
       } catch (error) {
         console.log(error);
       }
     };
     fetchData(); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log(dataOrder)
 
   return (
     <div className="container_orderpage">
@@ -157,7 +154,7 @@ function OrderPage() {
                                 <Col span={16}>{subItems.TenSP}</Col>
                                 <Col span={2}>x{subItems.SoLuongXuat}</Col>
                                 <Col span={6}>{formatNumber.format(subItems.GiaSPX)}</Col>
-                              </Row>      
+                              </Row>
                             </div>
                           );
                         })}

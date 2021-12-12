@@ -1,9 +1,9 @@
-import "./App.css";
 import "antd/dist/antd.css";
-import React, {Suspense} from "react";
-import NotFound from "./components/NotFound";
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import React, { Suspense } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import "./App.css";
 import AuthRoute from "./AuthRoute";
+import NotFound from "./components/NotFound";
 
 const LandingPage = React.lazy(() => import("./features/Home"));
 const Header = React.lazy(() => import("./components/Header"));

@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from "react";
 import "./addProductForm.css";
-import moment from "moment";
 import {Form, Input, Select, Button, Row, Col} from "antd";
 import PropTypes from "prop-types";
 
 import productAPI from "../../../api/productAPI";
 import importIncoiceAPI from "../../../api/importInvoice";
-import imageAPI from "../../../api/imageAPI";
-import {useParams} from "react-router";
+import tradeMarkAPI from "../../../api/tradeMarkAPI";
+import SizeAPI from "../../../api/sizeAPI";
 
 EditProductForm.propTypes = {
   DataSP: PropTypes.object,
@@ -16,27 +15,41 @@ EditProductForm.propTypes = {
 function EditProductForm(props) {
   const {Option} = Select;
 
-  const [dataSP, setDataSP] = useState([]);
+  const [thuonghieu, setThuonghieu] = useState([]);
+  const [size, setSize] = useState([]);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const data2 = await tradeMarkAPI.getAll();
+        setThuonghieu(data2);
+        const data3 = await SizeAPI.getAll();
+        setSize(data3);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchProduct();
+  }, []);
 
   const dataProduct = (data) => {
     return {
-      MaSP: data.masanpham,
-      TenSP: data.tensanpham,
-      GiaSPX: data.giaban,
-      MaTH: data.thuonghieu,
-      MaLSP: data.loaisanpham,
-      MaKT: data.size,
-      ThongTinSP: data.thongtinsanpham,
+      MaSP: data.MaSP,
+      TenSP: data.TenSP,
+      GiaSPX: data.GiaSPX,
+      MaTH: data.MaTH,
+      MaLSP: data.MaLSP,
+      MaKT: data.KichCo,
+      ThongTinSP: data.ThongTinSP,
     };
   };
 
   const dataInvoice = (data) => {
     return {
-      NgayLapHDN: moment().format("YYYY-MM-DD"),
-      SoLuongNhap: data.soluong,
-      GiaSPN: data.gianhap,
-      MaKhoHang: data.khohang,
-      MaSP: data.masanpham,
+      SoLuongNhap: data.SLSP,
+      GiaSPN: data.GiaSPN,
+      MaKhoHang: data.KhoHang,
+      MaSP: data.MaSP,
     };
   };
 
@@ -56,21 +69,39 @@ function EditProductForm(props) {
 
   const onSubmit = async (data) => {
     console.log(data);
-    // window.location.reload();
+    await productAPI.update(dataProduct(data));
+    await importIncoiceAPI.update(dataInvoice(data));
+    window.location.reload();
   };
 
   const dataForm = {
     GiaSPN: props.DataSP.GiaSPN,
     GiaSPX: props.DataSP.GiaSPX,
     KhoHang: "1",
-    KichCo: undefined,
+    KichCo: props.DataSP.MaKT,
     MaLSP: props.DataSP.MaLSP,
     MaSP: props.DataSP.MaSP,
     MaTH: props.DataSP.MaTH,
-    SLSP: undefined,
+    SLSP: props.DataSP.SoLuongNhap,
     TenSP: props.DataSP.TenSP,
     ThongTinSP: props.DataSP.ThongTinSP,
   };
+
+  const datathuonghieu =
+    !!thuonghieu &&
+    thuonghieu.map(({MaTH, TenTH}, i) => (
+      <Select.Option key={i} value={MaTH}>
+        {TenTH}
+      </Select.Option>
+    ));
+
+  const datasize =
+    !!size &&
+    size.map(({ID, KichThuocSP}, i) => (
+      <Select.Option key={i} value={ID}>
+        {KichThuocSP}
+      </Select.Option>
+    ));
 
   return (
     <div>
@@ -133,7 +164,7 @@ function EditProductForm(props) {
               }}
             >
               <Select>
-                <Option value="">Kích Cỡ</Option>
+                {datasize}
               </Select>
             </Form.Item>
           </Col>
@@ -152,7 +183,7 @@ function EditProductForm(props) {
               }}
             >
               <Select>
-                <Option value="">Thương Hiệu</Option>
+                {datathuonghieu}
               </Select>
             </Form.Item>
           </Col>

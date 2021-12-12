@@ -37,6 +37,10 @@ const productAPI = {
     const url = `/api/innerjoin/iminvoice=${MaSP}`;
     return axiosClient.get(url);
   },
+  update(data){
+    const url = "/api/product/update";
+    return axiosClient.put(url, data);
+  },
   delete(MaSP) {
     const url = `/api/product/MaSP=${MaSP}`;
     return axiosClient.delete(url);

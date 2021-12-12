@@ -3,7 +3,7 @@ import moment from "moment";
 import React, {useEffect, useState} from "react";
 import {Row, Col, Modal, Select, Button, Form} from "antd";
 import {useSelector} from "react-redux";
-import {useHistory, Redirect} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 import cartAPI from "../../api/cartAPI";
 import vnPayAPI from "../../api/vnpayAPI";
@@ -82,7 +82,7 @@ const PaymentPage = () => {
     const url = await vnPayAPI.create(Sortdata(values));
     setTimeout(() => {
       window.location = url;
-    }, 2000);
+    }, 1500);
     setIsModalVisible(false);
   };
 
@@ -97,7 +97,7 @@ const PaymentPage = () => {
   const dataHoaDonXuat = () => {
     return {
       NgayLapHDX: date(0),
-      TrangThaiHD: 0, 
+      TrangThaiHD: 0,
       TinhTrangHD: 0,
       MaKH: dataKhachHang[0].MaKH,
       MaKhoHang: "1",
@@ -114,17 +114,16 @@ const PaymentPage = () => {
 
   let i = 0;
   const paymentOffline = async () => {
-    
     if (!dataKhachHang) {
       history.push("/profile");
     } else {
-      console.log(dataKhachHang)
       const dataProductCart = await cartAPI.findAll(Username);
       await exportInvoiceAPI.create(dataHoaDonXuat());
       const MaHDX = await exportInvoiceAPI.findMaHDX();
       for (i; i < dataProductCart.length; i++) {
         await ChiTietHoaDonXuatAPI.create(dataChiTietHDX(dataProductCart[i], MaHDX[0].MaHDX));
       }
+
       setTimeout(() => {}, 1000);
       await cartAPI.DeleteAll(Username);
       history.push("/order");
@@ -182,9 +181,6 @@ const PaymentPage = () => {
                       }}
                       wrapperCol={{
                         span: 16,
-                      }}
-                      initialValues={{
-                        remember: true,
                       }}
                       onFinish={onFinish}
                       onFinishFailed={onFinishFailed}
@@ -246,7 +242,11 @@ const PaymentPage = () => {
               </Row>
             </div>
           </>
-        ) : (<><span>Bạn chưa có sản phẩm nào cả!!</span></>)}
+        ) : (
+          <>
+            <span>Bạn chưa có sản phẩm nào cả!!</span>
+          </>
+        )}
       </div>
     </>
   );
