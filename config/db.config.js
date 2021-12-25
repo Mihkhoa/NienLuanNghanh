@@ -1,6 +1,6 @@
 module.exports = {
-  HOST: "localhost",
+  HOST: "containers-us-west-21.railway.app",
   USER: "root",
-  PASSWORD: "",
-  DATABASE: "NienLuanNghanh",
+  PASSWORD: "QdEM63PR9CQHhbQSw3lD",
+  DATABASE: "railway",
 };
