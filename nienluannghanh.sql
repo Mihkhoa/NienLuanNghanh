@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 11, 2021 lúc 03:21 AM
+-- Thời gian đã tạo: Th12 12, 2021 lúc 05:24 AM
 -- Phiên bản máy phục vụ: 10.4.21-MariaDB
 -- Phiên bản PHP: 8.0.10
 
@@ -38,21 +38,22 @@ CREATE TABLE `chitiethoadonxuat` (
 --
 
 INSERT INTO `chitiethoadonxuat` (`MaHDX`, `SoLuongXuat`, `MaSP`) VALUES
-(59, 1, 'SP003'),
-(60, 1, 'SP003'),
-(61, 1, 'SP004'),
-(61, 2, 'SP005'),
-(61, 1, 'SP003'),
-(61, 2, 'SP003'),
-(61, 2, 'SP003'),
-(61, 2, 'SP003'),
-(61, 2, 'SP003'),
-(61, 2, 'SP003'),
-(61, 2, 'SP003'),
-(61, 2, 'SP003'),
-(61, 2, 'SP003'),
 (62, 2, 'SP003'),
-(63, 2, 'SP003');
+(63, 2, 'SP003'),
+(64, 2, 'SP007'),
+(70, 2, 'SP007'),
+(72, 2, 'SP003'),
+(72, 2, 'SP005'),
+(72, 2, 'SP002'),
+(72, 2, 'SP003'),
+(72, 2, 'SP004'),
+(72, 2, 'SP004'),
+(72, 2, 'SP003'),
+(72, 2, 'SP005'),
+(72, 1, 'SP003'),
+(72, 2, 'SP003'),
+(72, 1, 'SP006'),
+(72, 2, 'SP003');
 
 -- --------------------------------------------------------
 
@@ -112,7 +113,7 @@ CREATE TABLE `hoadonnhap` (
 
 INSERT INTO `hoadonnhap` (`MaHDN`, `NgayLapHDN`, `SoLuongNhap`, `GiaSPN`, `MaKhoHang`, `MaSP`) VALUES
 (36, '2021-10-24', 25, 300000, 1, 'SP003'),
-(37, '2021-10-24', 10, 300000, 1, 'SP004'),
+(37, '2021-10-24', 15, 300000, 1, 'SP004'),
 (38, '2021-10-24', 20, 300000, 1, 'SP005'),
 (39, '2021-10-24', 25, 300000, 1, 'SP006'),
 (40, '2021-10-24', 25, 300000, 1, 'SP001'),
@@ -139,11 +140,11 @@ CREATE TABLE `hoadonxuat` (
 --
 
 INSERT INTO `hoadonxuat` (`MaHDX`, `NgayLapHDX`, `TrangThaiHD`, `MaKH`, `MaKhoHang`, `TinhTrangHD`) VALUES
-(59, '2021-11-09', 0, 2, 1, 3),
-(60, '2021-11-09', 1, 2, 1, 1),
-(61, '2021-11-09', 1, 2, 1, 1),
 (62, '2021-11-10', 1, 1, 1, 1),
-(63, '2021-11-10', 1, 1, 1, 1);
+(63, '2021-11-10', 1, 1, 1, 1),
+(64, '2021-11-11', 1, 1, 1, 1),
+(70, '2021-11-11', 1, 1, 1, 1),
+(72, '2021-11-13', 1, 5, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -165,8 +166,11 @@ CREATE TABLE `khachhang` (
 --
 
 INSERT INTO `khachhang` (`MaKH`, `TenKH`, `SDT`, `Email`, `DiaChi`, `Username`) VALUES
-(1, 'Đào Minh Khoa', '0398423952', 'khoab1809248@student.ctu.edu.vn', '30/4, Hưng Lợi, Ninh Kiều, Cần Thơ', 'B1809248'),
-(2, 'Đào Thiên An', '0582566363', 'mihkhoa2020@gmail.com', 'D2, Thạnh Lọi, Vĩnh Thạnh, Cần Thơ', 'B1809249');
+(1, 'Đào Minh Khoa', '0398423953', 'khoab1809248@student.ctu.edu.vn', '30/4, Hưng Lợi, Ninh Kiều, Cần Thơ', 'B1809248'),
+(4, 'Đào Đàos', '0365254852', 'khaose@gmail.com', 'D22323232', 'B1809249'),
+(5, 'Trần Hoàng Hải', '0365245125', 'haihai@gmail.com', 'Cần Thơ', 'B1809250'),
+(6, 'Đào Minh Khoa', '0398423952', 'daominhkhoa1082000@Gmail.com', 'D2, Thạnh Lợi, Vĩnh Thạnh, Cần Thơ', '0398423952'),
+(7, 'Nguyen Van A', '0395236524', 'nguyenvana@gmail.com', '30/4, Ninh Kieu, Can Tho', '0398423953');
 
 -- --------------------------------------------------------
 
@@ -237,30 +241,6 @@ INSERT INTO `loaisanpham` (`MaLSP`, `TenLSP`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `payment`
---
-
-CREATE TABLE `payment` (
-  `IdOrder` int(11) NOT NULL,
-  `Username` varchar(50) NOT NULL,
-  `vnp_TmnCode` varchar(8) NOT NULL,
-  `vnp_Amount` int(11) NOT NULL,
-  `vnp_BankCode` varchar(20) NOT NULL,
-  `vnp_BankTranNo` varchar(255) NOT NULL,
-  `vnp_CardType` varchar(20) NOT NULL,
-  `vnp_PayDate` date NOT NULL,
-  `vnp_OrderInfo` varchar(255) NOT NULL,
-  `vnp_TransactionNo` varchar(15) NOT NULL,
-  `vnp_ResponseCode` varchar(2) NOT NULL,
-  `vnp_TransactionStatus` varchar(2) NOT NULL,
-  `vnp_TxnRef` varchar(100) NOT NULL,
-  `vnp_SecureHashType` varchar(10) NOT NULL,
-  `vnp_SecureHash` varchar(256) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
 -- Cấu trúc bảng cho bảng `sanpham`
 --
 
@@ -281,8 +261,8 @@ CREATE TABLE `sanpham` (
 INSERT INTO `sanpham` (`MaSP`, `TenSP`, `GiaSPX`, `ThongTinSP`, `MaTH`, `MaLSP`, `MaKT`) VALUES
 ('SP001', 'Nike Air Jordan 1 Retro High COJP Midnight Navy Rep 11', 1200000, '', 'TH004', 'LSP01', 7),
 ('SP002', 'Giày Nike air Jordan 4 Retro Union Guava Ice Like Auth', 2150000, '', 'TH002', 'LSP01', 4),
-('SP003', 'Giày Nike Air Jordan 1 Mid White Shadow', 750000, '', 'TH004', 'LSP01', 3),
-('SP004', 'Nike Air Jordan 1 Mid Black Chile Red White Rep 1:1', 750000, '', 'TH004', 'LSP01', 5),
+('SP003', 'Giày Nike Air Jordan 1 Mid White Shadow', 950000, 'HAHA', 'TH004', 'LSP01', 3),
+('SP004', 'Nike Air Jordan 1 Mid Black Chile Red White Rep 1:1', 750000, 'Giày rất đẹp', 'TH004', 'LSP01', 5),
 ('SP005', 'Nike Air Jordan 1 Zoom Air PSG Paris Saint-Germain', 750000, '', 'TH004', 'LSP01', 6),
 ('SP006', 'Nike Air Jordan 1 Retro High University Blue Like Auth', 750000, '', 'TH004', 'LSP01', 5),
 ('SP007', 'Giày Nike Air Jordan 1 Retro High Volt Gold', 3150000, '', 'TH002', 'LSP01', 5);
@@ -304,9 +284,14 @@ CREATE TABLE `taikhoan` (
 --
 
 INSERT INTO `taikhoan` (`Username`, `Password`, `Role`) VALUES
-('admin', 'admin', 'ADMIN'),
+('0398423952', 'matkhau', 'USER'),
+('0398423953', 'a788f6d55914857d4b97c1de99cb896b', 'USER'),
+('admin', '21232f297a57a5a743894a0e4a801fc3', 'ADMIN'),
 ('B1809248', 'matkhau', 'USER'),
-('B1809249', 'matkhau', 'USER');
+('B18092480', 'daominh', 'USER'),
+('B1809249', 'matkhau', 'USER'),
+('B1809250', 'matkhau', 'USER'),
+('B1809255', 'matkhau', 'USER');
 
 -- --------------------------------------------------------
 
@@ -401,13 +386,6 @@ ALTER TABLE `loaisanpham`
   ADD PRIMARY KEY (`MaLSP`);
 
 --
--- Chỉ mục cho bảng `payment`
---
-ALTER TABLE `payment`
-  ADD PRIMARY KEY (`IdOrder`),
-  ADD KEY `Relationship 99` (`Username`);
-
---
 -- Chỉ mục cho bảng `sanpham`
 --
 ALTER TABLE `sanpham`
@@ -436,7 +414,7 @@ ALTER TABLE `thuonghieu`
 -- AUTO_INCREMENT cho bảng `giohang`
 --
 ALTER TABLE `giohang`
-  MODIFY `MaGH` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `MaGH` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 
 --
 -- AUTO_INCREMENT cho bảng `hoadonnhap`
@@ -448,13 +426,13 @@ ALTER TABLE `hoadonnhap`
 -- AUTO_INCREMENT cho bảng `hoadonxuat`
 --
 ALTER TABLE `hoadonxuat`
-  MODIFY `MaHDX` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `MaHDX` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT cho bảng `khachhang`
 --
 ALTER TABLE `khachhang`
-  MODIFY `MaKH` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `MaKH` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `khohang`
@@ -467,12 +445,6 @@ ALTER TABLE `khohang`
 --
 ALTER TABLE `kichthuocsanpham`
   MODIFY `ID` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT cho bảng `payment`
---
-ALTER TABLE `payment`
-  MODIFY `IdOrder` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -523,12 +495,6 @@ ALTER TABLE `khachhang`
 --
 ALTER TABLE `khohang`
   ADD CONSTRAINT `Relationship 10` FOREIGN KEY (`MaLSP`) REFERENCES `loaisanpham` (`MaLSP`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Các ràng buộc cho bảng `payment`
---
-ALTER TABLE `payment`
-  ADD CONSTRAINT `Relationship 99` FOREIGN KEY (`Username`) REFERENCES `taikhoan` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `sanpham`
