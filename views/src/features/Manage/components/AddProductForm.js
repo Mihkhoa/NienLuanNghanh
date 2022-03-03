@@ -38,7 +38,6 @@ const schema = yup.object({
 });
 
 function FormAddProduct(props) {
-
   const {
     register,
     handleSubmit,
@@ -126,6 +125,7 @@ function FormAddProduct(props) {
     }
   };
 
+ 
   const onSubmit = async (data) => {
     if (!data) return;
     try {

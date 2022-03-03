@@ -39,19 +39,22 @@ Product.find = (MaSP, result) => {
 };
 
 Product.findProduct = (TenSP, result) => {
-  sql.query(`SELECT SanPham.MaSP, SanPham.TenSP, SanPham.GiaSPX, HinhAnhSanPham.HinhAnhSP FROM SanPham INNER JOIN HinhAnhSanPham ON SanPham.MaSP = HinhAnhSanPham.MaSP WHERE sanpham.TenSP LIKE "%${TenSP}%"`, (err, res) => {
-    if (err) {
-      console.log("error" + err);
-      result(null, err);
-      return;
-    }
+  sql.query(
+    `SELECT SanPham.MaSP, SanPham.TenSP, SanPham.GiaSPX, HinhAnhSanPham.HinhAnhSP FROM SanPham INNER JOIN HinhAnhSanPham ON SanPham.MaSP = HinhAnhSanPham.MaSP WHERE sanpham.TenSP LIKE "%${TenSP}%"`,
+    (err, res) => {
+      if (err) {
+        console.log("error" + err);
+        result(null, err);
+        return;
+      }
 
-    if (res.length > 0) {
-      result(null, res);
-    } else {
-      result(null);
-    }
-  });
+      if (res.length > 0) {
+        result(null, res);
+      } else {
+        result(null);
+      }
+    },
+  );
 };
 
 Product.getAll = (result) => {
@@ -67,47 +70,56 @@ Product.getAll = (result) => {
 };
 
 Product.getFilter_Sort = (Sort, result) => {
-  sql.query(`SELECT SanPham.MaSP, SanPham.TenSP, SanPham.GiaSPX, HinhAnhSanPham.HinhAnhSP FROM SanPham INNER JOIN HinhAnhSanPham ON SanPham.MaSP = HinhAnhSanPham.MaSP ORDER BY sanpham.GiaSPX ${Sort}`, (err, res) => {
-    if (err) {
-      console.log("error" + err);
-      result(null, err);
-      return;
-    }
+  sql.query(
+    `SELECT SanPham.MaSP, SanPham.TenSP, SanPham.GiaSPX, HinhAnhSanPham.HinhAnhSP FROM SanPham INNER JOIN HinhAnhSanPham ON SanPham.MaSP = HinhAnhSanPham.MaSP ORDER BY sanpham.GiaSPX ${Sort}`,
+    (err, res) => {
+      if (err) {
+        console.log("error" + err);
+        result(null, err);
+        return;
+      }
 
-    if (res.length > 0) {
-      result(null, res);
-    } else {
-      result(null);
-    }
-  });
+      if (res.length > 0) {
+        result(null, res);
+      } else {
+        result(null);
+      }
+    },
+  );
 };
 
 Product.getFilter_MaTH_Sort = (SortBy, MaTH, result) => {
-  sql.query(`SELECT SanPham.MaSP, SanPham.TenSP, SanPham.GiaSPX, HinhAnhSanPham.HinhAnhSP FROM SanPham INNER JOIN HinhAnhSanPham ON SanPham.MaSP = HinhAnhSanPham.MaSP WHERE SanPham.MaTH='${MaTH}' ORDER BY sanpham.GiaSPX ${SortBy}`, (err, res) => {
-    if (err) {
-      console.log("error" + err);
-      result(null, err);
-      return;
-    }
+  sql.query(
+    `SELECT SanPham.MaSP, SanPham.TenSP, SanPham.GiaSPX, HinhAnhSanPham.HinhAnhSP FROM SanPham INNER JOIN HinhAnhSanPham ON SanPham.MaSP = HinhAnhSanPham.MaSP WHERE SanPham.MaTH='${MaTH}' ORDER BY sanpham.GiaSPX ${SortBy}`,
+    (err, res) => {
+      if (err) {
+        console.log("error" + err);
+        result(null, err);
+        return;
+      }
 
-    if (res.length > 0) {
-      result(null, res);
-    } else {
-      result(null);
-    }
-  });
+      if (res.length > 0) {
+        result(null, res);
+      } else {
+        result(null);
+      }
+    },
+  );
 };
 
 Product.getAllImage = (result) => {
-  sql.query(`SELECT SanPham.MaSP, SanPham.TenSP, SanPham.GiaSPX, HinhAnhSanPham.HinhAnhSP FROM SanPham INNER JOIN HinhAnhSanPham ON SanPham.MaSP = HinhAnhSanPham.MaSP`, (err, res) => {
-    if (err) {
-      console.log("Error: ", err);
-      result(null, err);
-      return;
-    }
-    console.log("SanPham inner join HinhAnhSanPham");
-    result(null, res);
-  });
+  sql.query(
+    `SELECT SanPham.MaSP, SanPham.TenSP, SanPham.GiaSPX, HinhAnhSanPham.HinhAnhSP FROM SanPham INNER JOIN HinhAnhSanPham ON SanPham.MaSP = HinhAnhSanPham.MaSP`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(null, err);
+        return;
+      }
+      console.log("SanPham inner join HinhAnhSanPham");
+      result(null, res);
+    },
+  );
 };
 
 Product.innerJoin = (result) => {
@@ -153,7 +165,15 @@ Product.remove = (MaSP, result) => {
 Product.putUpdateProduct = (dataProduct, result) => {
   sql.query(
     "UPDATE SanPham SET TenSP=?, GiaSPX=?, ThongTinSP=?, MaTH=?, MaLSP=?, MaKT=? WHERE MaSP=?",
-    [dataProduct.TenSP, dataProduct.GiaSPX, dataProduct.ThongTinSP, dataProduct.MaTH, dataProduct.MaLSP, dataProduct.MaKT, dataProduct.MaSP],
+    [
+      dataProduct.TenSP,
+      dataProduct.GiaSPX,
+      dataProduct.ThongTinSP,
+      dataProduct.MaTH,
+      dataProduct.MaLSP,
+      dataProduct.MaKT,
+      dataProduct.MaSP,
+    ],
     (err, res) => {
       if (err) {
         console.log("error: ", err);

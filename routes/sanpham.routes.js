@@ -1,4 +1,3 @@
-
 module.exports = (app) => {
   const product = require("../controllers/sanpham.controller");
 
@@ -28,5 +27,4 @@ module.exports = (app) => {
   app.get("/api/innerjoin/iminvoice=:MaSP", product.fineOneInnerJoinImInvoice);
 
   app.put("/api/product/update", product.updateProduct);
- 
 };

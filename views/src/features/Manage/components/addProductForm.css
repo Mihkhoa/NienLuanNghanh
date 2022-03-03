@@ -38,6 +38,8 @@
   width: 100%;
 }
 
+
+/* =========================== */
 .inputField .hinhanh {
   display: none;
 }
@@ -66,7 +68,7 @@
   position: absolute;
   top: 0;
 }
-
+/* ========================== */
 .inputField button {
   min-width: 100px;
   padding: 5px;

@@ -1,4 +1,3 @@
-
 module.exports = (app) => {
   const size = require("../controllers/kichthuocsanpham.controller");
 
@@ -14,5 +13,4 @@ module.exports = (app) => {
   app.get("/api/size/ID=:ID", size.findOne);
 
   app.delete("/api/size/ID=:ID", size.delete);
-  
 };

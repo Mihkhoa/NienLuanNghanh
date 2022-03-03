@@ -45,7 +45,7 @@ module.exports = {
   },
 
   filterSort: (req, res) => {
-    console.log(req.params.Sort)
+    console.log(req.params.Sort);
     Product.getFilter_Sort(req.params.Sort, (err, data) => {
       if (err) {
         res.status(500).send({
@@ -58,15 +58,19 @@ module.exports = {
   },
 
   filter_MaTH_Sort: (req, res) => {
-    Product.getFilter_MaTH_Sort(req.params.Sort, req.params.MaTH, (err, data) => {
-      if (err) {
-        res.status(500).send({
-          message: "Not found.",
-        });
-      } else {
-        res.status(200).send(data);
-      }
-    });
+    Product.getFilter_MaTH_Sort(
+      req.params.Sort,
+      req.params.MaTH,
+      (err, data) => {
+        if (err) {
+          res.status(500).send({
+            message: "Not found.",
+          });
+        } else {
+          res.status(200).send(data);
+        }
+      },
+    );
   },
 
   searchProduct: (req, res) => {
@@ -113,8 +117,7 @@ module.exports = {
     Product.remove(req.params.MaSP, (err, data) => {
       if (err)
         res.status(500).send({
-          message:
-            err.message || "Some error.",
+          message: err.message || "Some error.",
         });
       else
         res.status(200).send({
@@ -133,7 +136,7 @@ module.exports = {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
-            message: 'Not found.',
+            message: "Not found.",
           });
         } else {
           res.status(500).send({
@@ -143,5 +146,4 @@ module.exports = {
       } else res.send(data);
     });
   },
-
 };
